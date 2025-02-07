@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Home from "./Home";
+
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +14,8 @@ const Login = () => {
 
     
   return (
+    <div>
+      <Home />
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center text-gray-700">Login</h2>
@@ -46,6 +51,7 @@ const Login = () => {
         </p>
       </div>
     </div>
+    </div> 
   )
 }
 
