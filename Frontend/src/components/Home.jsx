@@ -1,6 +1,10 @@
 import React from "react";
 import logo from '../assets/download.png'
 import { Link } from "react-router-dom";
+import { FaFacebook } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa6";
+import { FaTwitter } from "react-icons/fa";
+
 
 
 const Home = () => {
@@ -11,7 +15,7 @@ const Home = () => {
     
 
     <div className="bg-gradient-to-r from-black to-blue-950">
-      <div className=" text-white container mx-auto">
+      <div className="h-screen text-white container mx-auto">
         {/* Header */}
         <header className="flex items-center justify-between py-4 ">
           <div className="flex items-center space-x-2 ">
@@ -26,14 +30,67 @@ const Home = () => {
             <Link to="/Signup" className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">Signup</Link>
           </div>
         </header>
-
       
         {/* Main section */}
-        {/* <div className="h-screen">
+        <section className="text-center py-20">
+            <h1 className="text-4xl text-orange-600 font-bold">CoursHaven</h1>
+            <br />
+            <p className="text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+            <div className="py-6 space-x-8">
+              <button className="bg-green-500 font-semibold cursor-pointer py-2 px-4 duration-200 border-black rounded hover:bg-white hover:text-black ">Explore Course</button>
+              <button className=" bg-white text-black font-semibold cursor-pointer py-2 px-4 duration-200 border-black rounded hover:bg-green-500 hover:text-white ">Courses Videos</button>
+            </div>
+         </section>
 
-        </div> */}
+
+         {/* slider */}
+         <section>
+
+         </section>
+
 
         {/* Footer */}
+
+      <footer>
+        <div className=" grid grid-cols-1 md:grid-cols-3">
+          <div className="flex flex-col items-center md:items-start">
+            <div className="flex items-center space-x-2 ">
+                <img src={logo} alt="" className="h-7 w-7 rounded-full "/>
+                <h1 className="text-[18px] text-orange-500 font-bold ">CourseHaven</h1>
+
+             </div>
+
+              <div className="mt-2 ml-2 md:ml-8">
+                    <p className="mb-2">Follow us</p>
+                        <div className="flex space-x-4 ">
+                            <a href="">
+                              <FaFacebook className="hover:text-blue-400"/>
+                              </a>
+                            <a href="">
+                              <FaInstagram className="hover:text-pink-800"/>
+                              </a>
+                            <a href="">
+                              <FaTwitter className="hover:text-blue-400"/>
+                              </a>
+                        </div>
+                  </div>
+              </div>
+
+            <div className="items-center flex flex-col ">
+                <h1 className="text-xl font-semibold mb-4 ">
+                  Conects
+                </h1>
+                <ul className="space-y-2 text-gray-400">
+                  <li className="hover:text-white duration-300 cursor-pointer">Youtube- Learn </li>
+                  <li className="hover:text-white duration-300 cursor-pointer">Telegam- Learn</li>
+                  <li className="hover:text-white duration-300 cursor-pointer">Github-  Learn</li>
+                </ul>
+              </div>
+            <div>2</div>
+            
+        </div>
+      </footer>
+        
       </div>
     </div>
     
