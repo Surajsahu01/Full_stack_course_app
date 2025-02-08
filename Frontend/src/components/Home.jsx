@@ -51,7 +51,8 @@ const Home = () => {
 
         {/* Footer */}
 
-      <footer>
+      <hr />
+      <footer className="py-8">
         <div className=" grid grid-cols-1 md:grid-cols-3">
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center space-x-2 ">
@@ -86,7 +87,17 @@ const Home = () => {
                   <li className="hover:text-white duration-300 cursor-pointer">Github-  Learn</li>
                 </ul>
               </div>
-            <div>2</div>
+
+
+              <div className="items-center flex flex-col ">
+                <h1 className="text-xl font-semibold mb-4 ">Copyright &#169; 2024
+                </h1>
+                <ul className="px-1 space-y-2 text-gray-400">
+                  <li className="hover:text-white duration-300 cursor-pointer">Term & Condition </li>
+                  <li className="hover:text-white duration-300 cursor-pointer">Privacy Policy</li>
+                  <li className="hover:text-white duration-300 cursor-pointer">Refund & Concellection</li>
+                </ul>
+              </div>
             
         </div>
       </footer>
