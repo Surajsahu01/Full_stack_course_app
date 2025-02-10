@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from '../assets/download.png'
 import { Link } from "react-router-dom";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa6";
 import { FaTwitter } from "react-icons/fa";
+import axios from "axios";
 
 
 
 const Home = () => {
+
+  useEffect(()=>{
+    const fetchCourses = async()=>{
+      try {
+        const response = await axios.get("http://localhost:4000/api/users/show")
+        console.log(response);
+      } catch (error) {
+        console.log("error in fetching",error);
+      }
+    };
+    fetchCourses();
+
+  },[])
   return (
     // <div className="flex justify-center items-center h-screen text-3xl font-bold text-gray-700">
     //   Welcome to Home Page

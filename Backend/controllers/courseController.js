@@ -295,7 +295,7 @@ export const courseDetails = async(req, res) =>{
 
 export const buyCourse = async(req,res) => {
     try {
-        const { courseId } = req.params;
+        const { courseId } = req.body;
         const userId = req.user.id; // Retrieved from auth middleware
 
         // Check if the course exists

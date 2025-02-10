@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from "cors";
 
 import dotenv from 'dotenv';
 import connectDB from './database_connection/db.js';
@@ -15,7 +16,12 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+    methods: ["GET","POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-type", "Authorization"]
+}));
 
 
 // Database Connection
@@ -25,6 +31,7 @@ connectDB();
 app.use('/api/users', userRouter);
 app.use('/api/users', courseRouter);
 app.use('/api/admin', adminRouter);
+app.use(cors)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
