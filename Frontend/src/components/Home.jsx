@@ -13,7 +13,7 @@ const Home = () => {
   useEffect(()=>{
     const fetchCourses = async()=>{
       try {
-        const response = await axios.get("http://localhost:4000/api/users/show")
+        const response = await axios.get("http://localhost:4001/api/users/show");
         console.log(response);
       } catch (error) {
         console.log("error in fetching",error);
