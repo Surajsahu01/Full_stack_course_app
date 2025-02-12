@@ -41,7 +41,7 @@ const userMiddleware = async (req, res, next) => {
         if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
 
         const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
-        // req.user = decoded; // Store decoded token payload
+        req.userId = decoded.id; // Store decoded token payload
 
         const userExists = await UserDetails.findById(decoded.id);
 

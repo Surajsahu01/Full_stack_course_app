@@ -19,5 +19,5 @@ router.delete('/delete/:courseId', adminMiddleware,deletCourse);
 router.get('/show', getAllUsers);
 router.get('/show/:courseId', courseDetails);
 
-router.post('/buy', userMiddleware, buyCourse)
+router.post('/buy/:courseId', userMiddleware, buyCourse)
 export default router;

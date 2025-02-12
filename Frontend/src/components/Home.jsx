@@ -1,35 +1,80 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import logo from '../assets/download.png'
 import { Link } from "react-router-dom";
 import { FaFacebook } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa6";
 import { FaTwitter } from "react-icons/fa";
 import axios from "axios";
-
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Home = () => {
+  
+   
+  const[courses, setCourses]=useState([]);
 
   useEffect(()=>{
     const fetchCourses = async()=>{
       try {
-        const response = await axios.get("http://localhost:4001/api/users/show");
-        console.log(response);
+        const response = await axios.get("http://localhost:4002/api/users/show",
+          {
+            withCredentials: true
+          }
+        );
+        
+        console.log(response.data);
+        setCourses(response.data);
       } catch (error) {
         console.log("error in fetching",error);
       }
     };
     fetchCourses();
 
-  },[])
-  return (
-    // <div className="flex justify-center items-center h-screen text-3xl font-bold text-gray-700">
-    //   Welcome to Home Page
-    // </div>
-    
+  },[]);
 
+  var settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 3,
+    initialSlide: 0,
+    autoplay: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
+
+  
+
+  return (
+    
     <div className="bg-gradient-to-r from-black to-blue-950">
-      <div className="h-screen text-white container mx-auto">
+      <div className="min-h-screen text-white container mx-auto">
         {/* Header */}
         <header className="flex items-center justify-between py-4 ">
           <div className="flex items-center space-x-2 ">
@@ -59,6 +104,42 @@ const Home = () => {
 
          {/* slider */}
          <section>
+            <Slider {...settings}>
+              {
+                courses.map((course)=>(
+                  <div key={course._id} className=" p-4 ">
+                    <div className="relative flex-shrink-0 w-64 transition-transform duration-300 transform hover:scale-105 ">
+                      <div className="bg-gray-900 rounded-lg overflow-hidden w-[250px] h-[220px]">
+                        
+                        <img 
+                        src={course.image.url} 
+                        alt="" 
+                        className=" mt-4 h-28 w-full object-contain"/>
+                        
+                        {/* <div className="p-2 text-center">
+                          <h1 
+                          className="text-xl font-semibold text-white">
+                            {course.title}
+                            </h1>
+                        </div> */}
+                        <div className="p-2 text-center overflow-hidden whitespace-nowrap cursor-grab active:cursor-grabbing select-none">
+                          <h1 className="inline-block">{course.description}</h1>
+                        </div>
+                        {/* <div className=" text-center">
+                          <h1>{course.price}</h1>
+                        </div> */}
+                        <div className="mt-2 bg-orange-500 text-white text-center py-2 px-4 rounded-full hover:bg-blue-500 duration-300">
+                          <button>Enroll Now</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                ))
+
+              }
+                
+          </Slider>
 
          </section>
 

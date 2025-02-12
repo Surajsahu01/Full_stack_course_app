@@ -296,9 +296,18 @@ export const courseDetails = async(req, res) =>{
 
 
 export const buyCourse = async(req,res) => {
+
+        const {courseId} = req.params;
+        
     try {
-        const { courseId } = req.body;
-        const userId = req.user.id; // Retrieved from auth middleware
+        console.log("User ID from middleware:", req.userId); // Debugging
+
+        const userId = req.userId; // Retrieved from auth middleware
+
+        if (!userId) {
+            return res.status(400).json({ message: "User ID is missing" });
+        }
+         // Retrieved from auth middleware
 
         // Check if the course exists
         const course = await User.findById(courseId);
