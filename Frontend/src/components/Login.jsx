@@ -1,15 +1,48 @@
 import React, { useState } from "react";
 import logo from '../assets/download.png';
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [errorMessege, setErrorMessege] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Login Data:", { email, password });
+
+    try {
+      const response = await axios.post("http://localhost:4002/api/users/login", {
+        email,
+        password,
+      },
+    {
+      withCredentials: true,
+      headers:{
+        "Content-Type":"application/json",
+      },
+    })
+      // console.log("Signup Data:", {firstname,lastname, email, password });
+      console.log("loging Successfully:", response.data);
+      // alert(response.data.message); 
+      setErrorMessege(error.response.data.error);
+
+      // window.location.href = "/login";
+      navigate("/");
+    } catch (error) {
+      if (error.response) {
+        console.error("Error in login:", error.response.data);
+        // alert(error.response.data.error);
+        setErrorMessege(error.response.data.error);
+      } else {
+        console.error("login request failed", error);
+        // alert("Something went wrong! Please try again.");
+        setErrorMessege("Something went wrong! Please try again.");
+      }
+      
+    }
   };
 
     
@@ -65,11 +98,11 @@ const Login = () => {
         </div>
 
         <div className="flex gap-4">
-          <Link to="/login" className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">
-            Login
-          </Link>
-          <Link to="/signup" className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">
+          <Link to="/signup" className="bg-transparent text-white py-2 px-4 border  rounded hover:text-gray-300">
             Signup
+          </Link>
+          <Link to="/login" className="bg-orange-500 text-white py-2 px-4 border  rounded hover:text-gray-300">
+            Join now
           </Link>
         </div>
       </header>
@@ -84,6 +117,7 @@ const Login = () => {
               <label className="block text-white">Email</label>
               <input 
                 type="email"
+                id="email"
                 className="w-full px-4 py-2 mt-2 border border-white rounded-lg bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="Enter your email"
                 value={email}
@@ -94,12 +128,21 @@ const Login = () => {
               <label className="block text-white">Password</label>
               <input 
                 type="password"
+                id="password"
                 className="w-full px-4 py-2 mt-2 border border-white rounded-lg bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+              {
+                errorMessege && (
+                  <div className="text-red-500 mt-2 text-center">
+                    {errorMessege}
+                  </div>
+                )
+              }
+
             <button type="submit" className="w-full bg-blue-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-blue-600">
               Login
             </button>
