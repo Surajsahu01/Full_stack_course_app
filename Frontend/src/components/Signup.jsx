@@ -12,7 +12,7 @@ const Signup = () => {
   // const [confirmPassword, setConfirmPassword] = useState("")
   const navigate = useNavigate();
   const [errorMessege, setErrorMessege] = useState("");
-  const [successMessege, setSuccessMessege] = useState("");
+  // const [successMessege, setSuccessMessege] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();

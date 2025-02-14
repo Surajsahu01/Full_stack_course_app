@@ -33,7 +33,7 @@ const Home = () => {
       const response = await axios.get("http://localhost:4002/api/users/logout",{
         withCredentials: true,
       })
-      toast.success(response.data.messsage);
+      toast.success("Logout Successfull",response.data.messsage);
       localStorage.removeItem("user");
       setIsLogedIn(false);
     } catch (error) {
@@ -41,8 +41,6 @@ const Home = () => {
       toast.error(error.response.data.error || "Error in loging out");
     }
   };
-
-
 
   useEffect(()=>{
     const fetchCourses = async()=>{
@@ -147,8 +145,17 @@ const Home = () => {
             <br />
             <p className="text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
             <div className="py-6 space-x-8">
-              <button className="bg-green-500 font-semibold cursor-pointer py-2 px-4 duration-200 border-black rounded hover:bg-white hover:text-black ">Explore Course</button>
-              <button className=" bg-white text-black font-semibold cursor-pointer py-2 px-4 duration-200 border-black rounded hover:bg-green-500 hover:text-white ">Courses Videos</button>
+              <Link to={"/courses"}
+              className="bg-green-500 font-semibold cursor-pointer py-2 px-4 duration-200
+               border-black rounded hover:bg-white hover:text-black ">
+                Explore Course
+                </Link>
+
+              <Link to={"/videos"}
+              className=" bg-white text-black font-semibold cursor-pointer py-2 px-4 duration-200 
+              border-black rounded hover:bg-green-500 hover:text-white ">
+                Courses Videos
+                </Link>
             </div>
          </section>
 

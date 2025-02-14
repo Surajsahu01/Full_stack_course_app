@@ -27,7 +27,7 @@ const Login = () => {
     })
       // console.log("Signup Data:", {firstname,lastname, email, password });
       console.log("loging Successfully:", response.data);
-      localStorage.setItem("user", JSON.stringify(response.data.token))
+      localStorage.setItem("user", JSON.stringify(response.data.token, response.data.userId));
       // alert(response.data.message); 
       toast.success(response.data.message);
 

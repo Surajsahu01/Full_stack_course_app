@@ -76,6 +76,7 @@ export const userLogin = async(req, res) => {
 };
 
 export const userLogout = (req, res)=>{
+
     try {
         if(!req.cookies.jwt){
             return res.status(401).json({error: "Kindly login First"})
@@ -88,6 +89,20 @@ export const userLogout = (req, res)=>{
         res.status(500).json({message:"Error in Logout"});
         console.log("Error in logout", error);
         
+        
+    }
+}
+
+export const show = async(req, res) => {
+    const userId = req.userId;
+    try {
+        // const user = await UserDetails.findById(req.user.id).select("firstName email");
+        const user = await UserDetails.findById(userId);
+        // res.status(200).json(message: "user");
+        res.status(200).json({message: "user data", user});
+    } catch (error) {
+        res.status(500).json({error: "Error in fetching"})
+        console.log("Error in fetching", error);
         
     }
 }
