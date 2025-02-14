@@ -8,11 +8,41 @@ import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import toast from "react-hot-toast";
 
 const Home = () => {
   
    
-  const[courses, setCourses]=useState([]);
+  const [courses, setCourses]=useState([]);
+
+  const [isLogedIn, setIsLogedIn] = useState(false);
+  
+
+  useEffect(()=>{
+    const token = localStorage.getItem("user");
+    if(token){
+      setIsLogedIn(true);
+    }else{
+      setIsLogedIn(false);
+
+    }
+  },[])
+
+  const handelLogout = async()=>{
+    try {
+      const response = await axios.get("http://localhost:4002/api/users/logout",{
+        withCredentials: true,
+      })
+      toast.success(response.data.messsage);
+      localStorage.removeItem("user");
+      setIsLogedIn(false);
+    } catch (error) {
+      console.log("Error in loging out", error);
+      toast.error(error.response.data.error || "Error in loging out");
+    }
+  };
+
+
 
   useEffect(()=>{
     const fetchCourses = async()=>{
@@ -85,8 +115,29 @@ const Home = () => {
 
 
           <div className="flex space-x-2 ">
-            <Link to="/login"  className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">Login</Link>
-            <Link to="/Signup" className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">Signup</Link>
+            {isLogedIn? (
+              <button onClick={handelLogout}
+            className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">
+              Logout
+            </button>
+            ): 
+            (< div className="flex space-x-4 ">
+            <Link 
+            to="/login"  
+            className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">
+              Login
+              </Link>
+              
+
+            <Link 
+            to="/Signup" 
+            className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">
+              Signup
+              </Link>
+            </div>
+            )
+            }
+            
           </div>
         </header>
       
@@ -107,7 +158,7 @@ const Home = () => {
             <Slider {...settings}>
               {
                 courses.map((course)=>(
-                  <div key={course._id} className=" p-4 ">
+                  <div key={course._id} className=" p-4 mb-12">
                     <div className="relative flex-shrink-0 w-64 transition-transform duration-300 transform hover:scale-105 ">
                       <div className="bg-gray-900 rounded-lg overflow-hidden w-[250px] h-[220px]">
                         
