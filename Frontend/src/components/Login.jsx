@@ -25,9 +25,10 @@ const Login = () => {
         "Content-Type":"application/json",
       },
     })
-      // console.log("Signup Data:", {firstname,lastname, email, password });
+      console.log("Signup Data:", response.data.user.firstname);
       console.log("loging Successfully:", response.data);
-      localStorage.setItem("user", JSON.stringify(response.data.token, response.data.userId));
+      localStorage.setItem("user", JSON.stringify(response.data.token));
+      localStorage.setItem("id", JSON.stringify(response.data.user.firstname));
       // alert(response.data.message); 
       toast.success(response.data.message);
 

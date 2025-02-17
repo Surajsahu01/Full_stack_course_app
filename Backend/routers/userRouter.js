@@ -9,6 +9,6 @@ router.post('/signup', userSignup);
 router.post('/login', userLogin);
 router.get('/logout',userLogout);
 router.get('/purchase', userMiddleware , purchaeses);
-router.get('/user/:userID', userMiddleware, show);
+router.get('/user', userMiddleware, show);
 // module.exports = userRouter;
 export default router;

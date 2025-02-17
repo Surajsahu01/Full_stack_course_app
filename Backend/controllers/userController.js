@@ -94,12 +94,12 @@ export const userLogout = (req, res)=>{
 }
 
 export const show = async(req, res) => {
-    const userId = req.userId;
+    const userId = req.body;
     try {
         // const user = await UserDetails.findById(req.user.id).select("firstName email");
         const user = await UserDetails.findById(userId);
         // res.status(200).json(message: "user");
-        res.status(200).json({message: "user data", user});
+        res.status(200).json({message: "user data", firstname: user.firstname});
     } catch (error) {
         res.status(500).json({error: "Error in fetching"})
         console.log("Error in fetching", error);

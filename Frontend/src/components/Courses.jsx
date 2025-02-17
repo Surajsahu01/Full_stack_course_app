@@ -9,10 +9,6 @@ import Slider from "react-slick";
 import toast from "react-hot-toast";
 import { FaHome, FaSearch, FaDownload, FaCog, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 
-
-
-
-
 const Courses = () => {
 
     const [courses, setCourses]=useState([]);
@@ -22,31 +18,20 @@ const Courses = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [userName, setUserName] = useState("");
 
-    console.log("Courses1:",courses);
+    // console.log("Courses1:",courses);
     
 
-    useEffect(()=> {
-        const token = localStorage.getItem("user");
-        console.log("Token:",token);
-        if(token){ 
-           const response =  axios.get("http://localhost:4002/api/users/user",
-                {
-                    headers:{Authorization: `Bearer ${token}`},
-                })
-                .then((response)=>{
-                    console.log("user data:",response.data);
-                    setUserName(response.data.firstname);
-                    // setFilteredCourses(response.data);
-                })
-          setIsLogedIn(true);
-          const user = JSON.parse(token);
-          setUserName(user.firstname || "user");
-        //   setUserName(userData.lastname || "user");
-        }else{
-          setIsLogedIn(false);
-    
-        }
-      },[])
+    useEffect(()=>{
+      const token = localStorage.getItem("user");
+      if(token){
+        setIsLogedIn(true);
+        const storedUserName = localStorage.getItem("id");
+        setUserName(storedUserName ? storedUserName.replace(/['"]+/g, '') : "");
+        
+      }else{
+        setIsLogedIn(false);
+      }
+    },[]);
     
 
       const handleLogout = async()=>{
