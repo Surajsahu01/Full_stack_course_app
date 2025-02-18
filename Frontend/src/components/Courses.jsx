@@ -25,8 +25,12 @@ const Courses = () => {
       const token = localStorage.getItem("user");
       if(token){
         setIsLogedIn(true);
-        const storedUserName = localStorage.getItem("id");
-        setUserName(storedUserName ? storedUserName.replace(/['"]+/g, '') : "");
+        let storedUserName = localStorage.getItem("id");
+        if (storedUserName) {
+          storedUserName = storedUserName.replace(/['"]+/g, ''); // Remove extra quotes
+          storedUserName = storedUserName.charAt(0).toUpperCase() + storedUserName.slice(1).toLowerCase(); // Capitalize first letter
+        }
+        setUserName(storedUserName || "");
         
       }else{
         setIsLogedIn(false);
@@ -36,7 +40,7 @@ const Courses = () => {
 
       const handleLogout = async()=>{
         try {
-          const response = await axios.get("http://localhost:4002/api/users/logout",{
+          const response = await axios.get("http://localhost:5000/api/users/logout",{
             withCredentials: true,
           })
           toast.success("Logout Successfull",response.data.messsage);
@@ -53,7 +57,7 @@ const Courses = () => {
         const fetchCourses = async()=>{
             setLoading(true); 
           try {
-            const response = await axios.get("http://localhost:4002/api/users/show",
+            const response = await axios.get("http://localhost:5000/api/users/show",
               {
                 withCredentials: true
               }
@@ -96,7 +100,8 @@ const Courses = () => {
           </li>
           <li className="mb-4 flex items-center space-x-3 p-2 hover:bg-gray-500 rounded">
             <FaSearch />
-            <Link to="/courses" className="w-full">Courses</Link>
+            <Link to="/courses" className="w-full text-blue-6
+            00">Courses</Link>
           </li>
           <li className="mb-4 flex items-center space-x-3 p-2 hover:bg-gray-500 rounded">
             <FaDownload />
@@ -130,12 +135,12 @@ const Courses = () => {
             placeholder="Search courses..."
             value={searchQuery}
             onChange={handleSearch}
-            className="p-2 border border-gray-300 rounded-md w-1/3"
+            className="p-2  border border-gray-300 rounded-md w-1/3"
           />
           {
             isLogedIn && (
               <div  className="flex items-center space-x-4">
-                <p className="text-gray-500">Welcome, {userName}</p>
+                <p className="text-gray-700 hover:text-gray-500">Welcome {userName}</p>
                 {/* <Link to="/purchases" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Purchases</Link> */}
               </div>
               )

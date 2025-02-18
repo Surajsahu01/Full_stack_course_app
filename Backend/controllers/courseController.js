@@ -299,8 +299,9 @@ export const buyCourse = async(req,res) => {
 
         const {courseId} = req.params;
         
+        
     try {
-        console.log("User ID from middleware:", req.userId); // Debugging
+        // console.log("User ID from middleware:", req.userId); // Debugging
 
         const userId = req.userId; // Retrieved from auth middleware
 
@@ -311,12 +312,16 @@ export const buyCourse = async(req,res) => {
 
         // Check if the course exists
         const course = await User.findById(courseId);
-        if (!course) return res.status(404).json({ message: 'Course not found' });
+        if (!course){
+            return res.status(404).json({errors: "Course not found"});
+        } 
+        
+        // return res.status(404).json({ message: 'Course not found' });
 
         // Check if the user already purchased the course
         const existingPurchase = await Purchase.findOne({ userId, courseId });
         if (existingPurchase) {
-            return res.status(400).json({ message: 'You have already purchased this course' });
+            return res.status(400).json({ errors: 'You have already purchased this course' });
         }
 
         // Create a new purchase record
@@ -326,7 +331,7 @@ export const buyCourse = async(req,res) => {
         res.status(201).json({ message: 'Course purchased successfully', purchase: newPurchase });
     } 
     catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message });
+        res.status(500).json({ errors: 'Server error', error: error.message });
         console.log("server error", error);
         
     }
