@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 // import { FaFacebook } from "react-icons/fa";
 // import { FaInstagram } from "react-icons/fa6";
 // import { FaTwitter } from "react-icons/fa";
+import Sidebar from "./Sidebar";
 import axios from "axios";
-import Slider from "react-slick";
+
 import toast from "react-hot-toast";
-import { FaHome, FaSearch, FaDownload, FaCog, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+
 
 const Courses = () => {
 
@@ -91,39 +92,7 @@ const Courses = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className="w-1/5 bg-gray-300 text-black p-5 flex flex-col items-center rounded-2xl">
-        <img src={logo} alt="Logo" className="h-16 mb-6" />
-        <ul className="w-full">
-          <li className="mb-4 flex items-center space-x-3 p-2 hover:bg-gray-500 rounded">
-            <FaHome />
-            <Link to="/" className="w-full">Home</Link>
-          </li>
-          <li className="mb-4 flex items-center space-x-3 p-2 hover:bg-gray-500 rounded">
-            <FaSearch />
-            <Link to="/courses" className="w-full text-blue-6
-            00">Courses</Link>
-          </li>
-          <li className="mb-4 flex items-center space-x-3 p-2 hover:bg-gray-500 rounded">
-            <FaDownload />
-            <Link to="/purchases" className="w-full">Purchases</Link>
-          </li>
-          <li className="mb-4 flex items-center space-x-3 p-2 hover:bg-gray-500 rounded">
-            <FaCog />
-            <Link to="/settings" className="w-full">Settings</Link>
-          </li>
-          {!isLogedIn ? (
-            <li className="mb-4 flex items-center space-x-3 p-2 hover:bg-gray-500 rounded">
-              <FaSignInAlt />
-              <Link to="/login" className="w-full">Login</Link>
-            </li>
-          ) : (
-            <li className="flex items-center space-x-3 p-2 hover:bg-red-600 rounded cursor-pointer" onClick={handleLogout}>
-              <FaSignOutAlt />
-              <span>Logout</span>
-            </li>
-          )}
-        </ul>
-      </div>
+      <Sidebar />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
