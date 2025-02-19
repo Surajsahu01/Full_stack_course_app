@@ -8,10 +8,18 @@ const purchaseSchema = new mongoose.Schema({
         ref: 'UserDetails', 
         required: true 
     },
+    userName: { 
+        type: String, 
+        required: true 
+    },
     courseId: 
     { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User', 
+        required: true 
+    },
+    courseName: { 
+        type: String, 
         required: true 
     },
     purchasedAt: 

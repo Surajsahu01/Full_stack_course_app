@@ -39,20 +39,7 @@ const Courses = () => {
     },[]);
     
 
-      const handleLogout = async()=>{
-        try {
-          const response = await axios.get("http://localhost:5000/api/users/logout",{
-            withCredentials: true,
-          })
-          toast.success("Logout Successfull",response.data.messsage);
-          localStorage.removeItem("user");
-          setIsLogedIn(false);
-        } catch (error) {
-          console.log("Error in loging out", error);
-          toast.error(error.response.data.error || "Error in loging out");
-        }
-      };
-    
+      
 
       useEffect(()=>{
         const fetchCourses = async()=>{

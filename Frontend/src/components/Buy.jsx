@@ -47,12 +47,14 @@ const Buy = () => {
         } catch (error) {
             if (error.response?.status === 400) {
                 toast.error("User already purchased this course");
+                navigate("/purchases");
             } else {
                 toast.error(error?.response?.data?.errors || "Something went wrong");
             }
         } finally {
             setLoading(false);
         }
+
     };
 
     return (

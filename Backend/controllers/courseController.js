@@ -3,6 +3,7 @@ import cloudinary from 'cloudinary';
 import User from "../models/courseModel.js"
 import fs from 'fs';
 import Purchase from '../models/purchaseModel.js';
+import UserDetails from '../models/userModel.js';
 
 // Configure Cloudinary
 cloudinary.v2.config({
@@ -305,6 +306,9 @@ export const buyCourse = async(req,res) => {
 
         const userId = req.userId; // Retrieved from auth middleware
 
+        const userName = await UserDetails.findById(userId);
+        const courseName = await User.findById(courseId);
+
         if (!userId) {
             return res.status(400).json({ message: "User ID is missing" });
         }
@@ -325,7 +329,14 @@ export const buyCourse = async(req,res) => {
         }
 
         // Create a new purchase record
-        const newPurchase = new Purchase({ userId, courseId });
+        const newPurchase = new Purchase(
+            { 
+                userId,
+                userName: userName.firstname,
+                courseId, 
+                courseName: courseName.title, 
+            }
+        );
         await newPurchase.save();
 
         res.status(201).json({ message: 'Course purchased successfully', purchase: newPurchase });

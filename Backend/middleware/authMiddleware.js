@@ -36,10 +36,11 @@ import UserDetails from "../models/userModel.js";
 
 
 const userMiddleware = async (req, res, next) => {
-    try {
+    
         const token = req.header('Authorization');
-        if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
-
+        if (!token) return res.status(401).json({ error: 'Access denied. No token provided.' });
+        
+    try{
         const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
         req.userId = decoded.id; // Store decoded token payload
 

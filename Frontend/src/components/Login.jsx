@@ -15,7 +15,7 @@ const Login = () => {
     console.log("Login Data:", { email, password });
 
     try {
-      const response = await axios.post("http://localhost:4002/api/users/login", {
+      const response = await axios.post("http://localhost:5000/api/users/login", {
         email,
         password,
       },
@@ -27,7 +27,8 @@ const Login = () => {
     })
       console.log("Signup Data:", response.data.user.firstname);
       console.log("loging Successfully:", response.data);
-      localStorage.setItem("user", JSON.stringify(response.data.token));
+
+      localStorage.setItem("user", JSON.stringify(response.data));
       localStorage.setItem("id", JSON.stringify(response.data.user.firstname));
       // alert(response.data.message); 
       toast.success(response.data.message);

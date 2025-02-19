@@ -14,23 +14,30 @@ const Home = () => {
   
    
   const [courses, setCourses]=useState([]);
-
   const [isLogedIn, setIsLogedIn] = useState(false);
+  const [userName, setUserName] = useState("");
   
 
   useEffect(()=>{
     const token = localStorage.getItem("user");
     if(token){
       setIsLogedIn(true);
+      let storedUserName = localStorage.getItem("id");
+      if (storedUserName) {
+        storedUserName = storedUserName.replace(/['"]+/g, ''); // Remove extra quotes
+        storedUserName = storedUserName.charAt(0).toUpperCase() + storedUserName.slice(1).toLowerCase(); // Capitalize first letter
+      }
+      setUserName(storedUserName || "");
     }else{
       setIsLogedIn(false);
 
     }
   },[])
 
+
   const handelLogout = async()=>{
     try {
-      const response = await axios.get("http://localhost:4002/api/users/logout",{
+      const response = await axios.get("http://localhost:5000/api/users/logout",{
         withCredentials: true,
       })
       toast.success("Logout Successfull",response.data.messsage);
@@ -45,7 +52,7 @@ const Home = () => {
   useEffect(()=>{
     const fetchCourses = async()=>{
       try {
-        const response = await axios.get("http://localhost:4002/api/users/show",
+        const response = await axios.get("http://localhost:5000/api/users/show",
           {
             withCredentials: true
           }
@@ -114,10 +121,20 @@ const Home = () => {
 
           <div className="flex space-x-2 ">
             {isLogedIn? (
+              <div className="flex space-x-4 ">
               <button onClick={handelLogout}
             className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">
               Logout
             </button>
+            {
+              isLogedIn && (
+                <div  className="flex items-center space-x-4">
+                  <p className="text-gray-300 hover:text-gray-200">Welcome {userName}</p>
+                  {/* <Link to="/purchases" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Purchases</Link> */}
+                </div>
+                )
+            }
+            </div>
             ): 
             (< div className="flex space-x-4 ">
             <Link 
