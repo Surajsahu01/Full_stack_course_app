@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 
-import { addUser, buyCourse, courseDetails, deletCourse, getAllUsers, updateCourse} from '../controllers/courseController.js';
+import { addUser, buyCourse, confirmPurchase, courseDetails, deletCourse, getAllUsers, updateCourse} from '../controllers/courseController.js';
 import userMiddleware from '../middleware/authMiddleware.js'
 import adminMiddleware from '../middleware/adminMiddleware.js';
 
@@ -20,4 +20,5 @@ router.get('/show', getAllUsers);
 router.get('/show/:courseId', courseDetails);
 
 router.post('/buy/:courseId', userMiddleware, buyCourse)
+router.post('/confirmPurchase', userMiddleware, confirmPurchase)
 export default router;

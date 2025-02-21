@@ -296,50 +296,48 @@ export const courseDetails = async(req, res) =>{
     // }
 
 
-export const buyCourse = async(req,res) => {
 
+import Stripe from "stripe"
+const stripe = new Stripe(process.env.STRIP_KEY);
+console.log(process.env.STRIP_KEY);
+
+export const buyCourse = async(req,res) => {
         const {courseId} = req.params;
-        
-        
+      
     try {
         // console.log("User ID from middleware:", req.userId); // Debugging
-
         const userId = req.userId; // Retrieved from auth middleware
-
         const userName = await UserDetails.findById(userId);
-        const courseName = await User.findById(courseId);
+        const course = await User.findById(courseId);
 
         if (!userId) {
             return res.status(400).json({ message: "User ID is missing" });
         }
          // Retrieved from auth middleware
-
         // Check if the course exists
-        const course = await User.findById(courseId);
         if (!course){
             return res.status(404).json({errors: "Course not found"});
         } 
-        
-        // return res.status(404).json({ message: 'Course not found' });
-
         // Check if the user already purchased the course
         const existingPurchase = await Purchase.findOne({ userId, courseId });
         if (existingPurchase) {
             return res.status(400).json({ errors: 'You have already purchased this course' });
         }
 
-        // Create a new purchase record
-        const newPurchase = new Purchase(
-            { 
-                userId,
-                userName: userName.firstname,
-                courseId, 
-                courseName: courseName.title, 
-            }
-        );
-        await newPurchase.save();
+        const amount = course.price * 100;
 
-        res.status(201).json({ message: 'Course purchased successfully', purchase: newPurchase });
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount,
+            currency: "usd",
+            payment_method_types: ["card"],
+            
+          });
+          res.status(201).json({
+            message: 'Payment initiated',
+            course,
+            clientSecret: paymentIntent.client_secret
+        });
+
     } 
     catch (error) {
         res.status(500).json({ errors: 'Server error', error: error.message });
@@ -347,4 +345,43 @@ export const buyCourse = async(req,res) => {
         
     }
 
+};
+
+export const confirmPurchase = async (req, res) => {
+    const { paymentIntentId, courseId } = req.body;
+
+    try {
+        const userId = req.userId; // Retrieved from auth middleware
+        const userName = await UserDetails.findById(userId);
+        const course = await User.findById(courseId);
+
+        if (!userId) {
+            return res.status(400).json({ message: "User ID is missing" });
+        }
+
+        if (!course) {
+            return res.status(404).json({ errors: "Course not found" });
+        }
+
+        // Confirm the payment
+        const paymentIntent = await stripeInstance.paymentIntents.retrieve(paymentIntentId);
+
+        if (paymentIntent.status !== 'succeeded') {
+            return res.status(400).json({ errors: 'Payment not successful' });
+        }
+
+        // Create a new purchase record
+        const newPurchase = new Purchase({
+            userId,
+            userName: userName.firstname,
+            courseId,
+            courseName: course.title,
+        });
+        await newPurchase.save();
+
+        res.status(201).json({ message: 'Course purchased successfully', purchase: newPurchase });
+    } catch (error) {
+        res.status(500).json({ errors: 'Server error', error: error.message });
+        console.log("server error", error);
+    }
 };

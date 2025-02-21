@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login Data:", { email, password });
+    // console.log("Login Data:", { email, password });
 
     try {
       const response = await axios.post("http://localhost:5000/api/users/login", {
