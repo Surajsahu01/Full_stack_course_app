@@ -14,6 +14,7 @@ const Buy = () => {
     const [error, setError] = useState("");
     const [cardError, setCardError] = useState("");
     const [paymentId, setPaymentId] = useState("");
+    const [userData, setUserData] = useState(null);
 
     const user = JSON.parse(localStorage.getItem("user"));
     
@@ -41,7 +42,7 @@ const Buy = () => {
             try {
                 const token = user.token;
                 const response = await axios.post(
-                    `http://localhost:5000/api/users/buy/${courseId}`,
+                    `http://localhost:5000/v1/course/buy/${courseId}`,
                     {},
                     {
                         headers: { Authorization: `Bearer ${token}` },
@@ -50,7 +51,10 @@ const Buy = () => {
                 );
                 setCourse(response.data.course);
                 setClientSecret(response.data.clientSecret);
+                setUserData(user.user);
+                console.log(response.data);
                 setLoading(false);
+
             } catch (error) {
                 if (error.response?.status === 400) {
                     setError("User already purchased this course");
@@ -111,6 +115,8 @@ const Buy = () => {
                 },
             },
         });
+        console.log("payment info" , paymentIntent);
+        
 
         if (confirmError) {
             setCardError(confirmError.message);
@@ -122,17 +128,25 @@ const Buy = () => {
             setPaymentId(paymentIntent.id);
             try {
                 const response = await axios.post(
-                    `http://localhost:5000/api/users/confirmPurchase`,
+                    `http://localhost:5000/v1/course/confirmPurchase`,
                     {
                         paymentIntentId: paymentIntent.id,
                         courseId: courseId,
+                        userId: user.user.id,  // Send user ID
+                        userName: user.user.firstname,  // Send user name
+                        userEmail: user.user.email,  // Send user email
+                        courseName: course.title,  // Send course title
                     },
+                    
                     {
                         headers: { Authorization: `Bearer ${user.token}` },
                         withCredentials: true,
                     }
                 );
-                console.log("Purchase confirmed", response.data);
+
+                // 
+                toast.success("Payment successful! Order placed.");
+                console.log("Purchase confirmed", response);
                 navigate("/purchases");  // Redirect to purchase page after successful payment
             } catch (error) {
                 console.error("Error confirming purchase", error);
@@ -142,37 +156,50 @@ const Buy = () => {
 
         setLoading(false);
     };
+    
 
     return (
         <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
-            {error ? (
-                <p className="text-red-500">{error}</p>
-            ) : course ? (
-                <>
-                    <h1 className="text-2xl font-bold mb-4">{course.name}</h1>
-                    <p className="text-lg mb-4">Price: ${course.price}</p>
-                    <form onSubmit={handleBuy} className="w-full max-w-md">
-                        <CardElement className="p-4 border border-gray-300 rounded-md mb-4" />
-                        {cardError && <p className="text-red-500 mb-4">{cardError}</p>}
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className={`w-full px-6 py-3 rounded-md text-white 
-                                ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
-                        >
-                            {loading ? "Processing..." : "Buy Course"}
-                        </button>
-                    </form>
-                    {paymentId && (
-                        <div className="mt-4 p-4 border border-green-500 rounded-md">
-                            <p className="text-green-500">Payment successful! Your Payment ID: {paymentId}</p>
-                        </div>
-                    )}
-                </>
-            ) : (
-                <p>Loading course details...</p>
-            )}
-        </div>
+        {error ? (
+            <p className="text-red-500">{error}</p>
+        ) : course ? (
+            <>
+                <h1 className="text-2xl font-bold mb-4">{course.title}</h1>
+                <p className="text-lg mb-4">Price: ${course.price}</p>
+
+                {/* Display User Details */}
+                {userData && (
+                    <div className="bg-white p-4 rounded-md shadow-md mb-4 w-full max-w-md">
+                        <h2 className="text-xl font-semibold mb-2">User Details</h2>
+                        <p><strong>Name:</strong> {userData.firstname}</p>
+                        <p><strong>Email:</strong> {userData.email}</p>
+                        <p><strong>User ID:</strong> {userData.id}</p>
+                        
+                    </div>
+                )}
+
+                <form onSubmit={handleBuy} className="w-full max-w-md">
+                    <CardElement className="p-4 border border-gray-300 rounded-md mb-4" />
+                    {cardError && <p className="text-red-500 mb-4">{cardError}</p>}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`w-full px-6 py-3 rounded-md text-white 
+                            ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+                    >
+                        {loading ? "Processing..." : "Buy Course"}
+                    </button>
+                </form>
+                {paymentId && (
+                    <div className="mt-4 p-4 border border-green-500 rounded-md">
+                        <p className="text-green-500">Payment successful! Your Payment ID: {paymentId}</p>
+                    </div>
+                )}
+            </>
+        ) : (
+            <p>Loading course details...</p>
+        )}
+    </div>
     );
 };
 

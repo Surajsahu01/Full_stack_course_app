@@ -1,12 +1,7 @@
 import React, { useEffect,useState } from "react";
-import logo from '../assets/download.png'
 import { Link } from "react-router-dom";
-// import { FaFacebook } from "react-icons/fa";
-// import { FaInstagram } from "react-icons/fa6";
-// import { FaTwitter } from "react-icons/fa";
 import Sidebar from "./Sidebar";
 import axios from "axios";
-
 import toast from "react-hot-toast";
 
 
@@ -45,7 +40,7 @@ const Courses = () => {
         const fetchCourses = async()=>{
             setLoading(true); 
           try {
-            const response = await axios.get("http://localhost:5000/api/users/show",
+            const response = await axios.get("http://localhost:5000/v1/course/show",
               {
                 withCredentials: true
               }

@@ -28,7 +28,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/users/logout", {
+      const response = await axios.get("http://localhost:5000/v1/users/logout", {
         withCredentials: true,
       });
       toast.success("Logout Successful", response.data.message);

@@ -12,6 +12,10 @@ const purchaseSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
+    userEmail: {
+        type: String,
+        required: true
+    },
     courseId: 
     { 
         type: mongoose.Schema.Types.ObjectId, 
@@ -21,6 +25,11 @@ const purchaseSchema = new mongoose.Schema({
     courseName: { 
         type: String, 
         required: true 
+    },
+    paymentId: {
+        type: String,
+        required: true,
+        unique: true, // Ensure no duplicate payments
     },
     purchasedAt: 
     { 

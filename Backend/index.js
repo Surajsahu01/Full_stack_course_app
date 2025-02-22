@@ -6,6 +6,7 @@ import courseRouter from './routers/courseRouter.js';
 import userRouter from "./routers/userRouter.js"
 import adminRouter from "./routers/adminRoutes.js"
 import cookieParser from 'cookie-parser';
+import orderRouter from "./routers/orderRoute.js"
 
 // import fileUplode from "express-fileupload";
 dotenv.config();
@@ -27,9 +28,10 @@ app.use(cors({
 connectDB();
 
 // Routes
-app.use('/api/users', userRouter);
-app.use('/api/users', courseRouter);
-app.use('/api/admin', adminRouter);
+app.use('/v1/users', userRouter);
+app.use('/v1/course', courseRouter);
+app.use('/v1/admin', adminRouter);
+app.use('/v1/order', orderRouter);
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {

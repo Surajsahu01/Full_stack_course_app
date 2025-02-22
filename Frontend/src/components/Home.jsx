@@ -37,7 +37,7 @@ const Home = () => {
 
   const handelLogout = async()=>{
     try {
-      const response = await axios.get("http://localhost:5000/api/users/logout",{
+      const response = await axios.get("http://localhost:5000/v1/users/logout",{
         withCredentials: true,
       })
       toast.success("Logout Successfull",response.data.messsage);
@@ -52,7 +52,7 @@ const Home = () => {
   useEffect(()=>{
     const fetchCourses = async()=>{
       try {
-        const response = await axios.get("http://localhost:5000/api/users/show",
+        const response = await axios.get("http://localhost:5000/v1/course/show",
           {
             withCredentials: true
           }

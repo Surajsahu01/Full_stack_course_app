@@ -25,7 +25,7 @@ const Purchases = () => {
 
         const fetchPurchases = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/users/purchase", {
+                const response = await axios.get("http://localhost:5000/v1/users/purchase", {
                     headers: { Authorization: `Bearer ${token}` },
                     withCredentials: true,
                 });

@@ -266,35 +266,58 @@ export const courseDetails = async(req, res) =>{
 }
 
 
+// import Stripe from "stripe"
+// const stripe = new Stripe(process.env.STRIP_KEY);
+// console.log(process.env.STRIP_KEY);
+
 // export const buyCourse = async(req,res) => {
     
-    // const {userId} = req;
-    // const {courseId} = req.params;
+//     const {userId} = req;
+//     const {courseId} = req.params;
+//     const userName = await UserDetails.findById(userId);
+//     const course = await User.findById(courseId);
 
-    // try {
-    //     const course = await User.findById(courseId);
-    //     if(!course){
-    //         return res.status(400).json({error: "Course Not Found"});
-    //     }
-    //     const existingParchase = await Purchase.findOne({userId, courseId});
-    //     if(existingParchase){
-    //         res.status(200).json({message: "User has already purchase this course."});
-    //     }
+//     try {
+//         const course = await User.findById(courseId);
+//         if(!course){
+//             return res.status(404).json({error: "Course Not Found"});
+//         }
+//         const existingParchase = await Purchase.findOne({userId, courseId});
+//         if(existingParchase){
+//             res.status(400).json({error: "User has already purchase this course."});
+//         }
+
+//         // strip payment code gose here
+//         const paymentIntent = await stripe.paymentIntents.create({
+//             amount: course.price ,
+//             payment_method_types: ['card'],
+//             currency: "usd",
+//             // automatic_payment_methods: {
+//             //     enabled: true,
+//             // },
+//         });
+
         
-    //     const newPurchase = new Purchase({userId,courseId});
-    //     await newPurchase.save();
-    //     res.status(201).json({message:"cousre add successfull", newPurchase})
+//         const newPurchase = new Purchase({
+//             userId,
+//             userName: userName.firstname,
+//             courseId,
+//             courseName: course.title,
+            
+//             courseId});
+//         await newPurchase.save();
+//         res.status(201).json({message:"cousre add successfull", clientSecret: paymentIntent.client_secret});
        
 
-    // } catch (error) {
-    //     res.status(500).json({
-    //         error: "Error in course buying"
-    //     })
-    //     console.log("Error in course buying", error);
+//     } catch (error) {
+//         res.status(500).json({
+//             error: "Error in course buying"
+//         })
+//         console.log("Error in course buying", error);
         
         
-    // }
-
+//     }
+// }
 
 
 import Stripe from "stripe"
@@ -324,7 +347,7 @@ export const buyCourse = async(req,res) => {
             return res.status(400).json({ errors: 'You have already purchased this course' });
         }
 
-        const amount = course.price * 100;
+        const amount = course.price;
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: amount,
@@ -352,8 +375,16 @@ export const confirmPurchase = async (req, res) => {
 
     try {
         const userId = req.userId; // Retrieved from auth middleware
-        const userName = await UserDetails.findById(userId);
+        const user = await UserDetails.findById(userId);
         const course = await User.findById(courseId);
+
+        // Fetch user details
+        const userinfo = await UserDetails.findById(userId).select("firstname lastname email");
+        console.log("Fetched User Data:", userinfo); // Debugging
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
         if (!userId) {
             return res.status(400).json({ message: "User ID is missing" });
@@ -364,7 +395,7 @@ export const confirmPurchase = async (req, res) => {
         }
 
         // Confirm the payment
-        const paymentIntent = await stripeInstance.paymentIntents.retrieve(paymentIntentId);
+        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
         if (paymentIntent.status !== 'succeeded') {
             return res.status(400).json({ errors: 'Payment not successful' });
@@ -373,9 +404,11 @@ export const confirmPurchase = async (req, res) => {
         // Create a new purchase record
         const newPurchase = new Purchase({
             userId,
-            userName: userName.firstname,
-            courseId,
+            userName: `${user.firstname} ${user.lastname}`, // Assuming first and last name exist
+            userEmail: user.email,
             courseName: course.title,
+            courseId,
+            paymentId: paymentIntentId, // Save Stripe Payment ID
         });
         await newPurchase.save();
 
