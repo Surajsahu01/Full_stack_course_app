@@ -49,11 +49,11 @@ export const adminLogin = async(req, res) => {
         
         const user = await Admin.findOne({email});
         if(!user){
-            return res.status(400).json({error:"Invalid credentials"});
+            return res.status(400).json({error:"USer not found"});
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch){
-            return res.status(400).json({error:"Invalid credentials"});
+            return res.status(400).json({error:"Passwod not match"});
         }
 
         const token = jwt.sign({id: user._id}, process.env.JWT_admin_SECRET, { expiresIn: '1d' });

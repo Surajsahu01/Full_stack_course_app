@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 const Sidebar = () => {
   const [isLogedIn, setIsLogedIn] = useState(false);
-  const [userName, setUserName] = useState("");
+  // const [userName, setUserName] = useState("");
   const location = useLocation();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Sidebar = () => {
         storedUserName = storedUserName.replace(/['"]+/g, "");
         storedUserName = storedUserName.charAt(0).toUpperCase() + storedUserName.slice(1).toLowerCase();
       }
-      setUserName(storedUserName || "");
+      // setUserName(storedUserName || "");
     } else {
       setIsLogedIn(false);
     }

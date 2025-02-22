@@ -330,7 +330,7 @@ export const buyCourse = async(req,res) => {
     try {
         // console.log("User ID from middleware:", req.userId); // Debugging
         const userId = req.userId; // Retrieved from auth middleware
-        const userName = await UserDetails.findById(userId);
+        // const userName = await UserDetails.findById(userId);
         const course = await User.findById(courseId);
 
         if (!userId) {
@@ -406,8 +406,9 @@ export const confirmPurchase = async (req, res) => {
             userId,
             userName: `${user.firstname} ${user.lastname}`, // Assuming first and last name exist
             userEmail: user.email,
-            courseName: course.title,
             courseId,
+            courseName: course.title,
+            coursePrice: course.price,
             paymentId: paymentIntentId, // Save Stripe Payment ID
         });
         await newPurchase.save();

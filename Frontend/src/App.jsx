@@ -8,6 +8,12 @@ import { Toaster } from "react-hot-toast";
 import Courses from "./components/Courses";
 import Buy from "./components/Buy";
 import Purchases from "./components/Purchases";
+import AdminSignup from "./admin/AdminSignup";
+import AdminLogin from "./admin/AdminLogin";
+import AdminDashbord from "./admin/AdminDashbord";
+import CourseCreate from "./admin/CourseCreate";
+import OurCourse from "./admin/OurCourse";
+import UpdateCourse from "./admin/UpdateCourse";
 
 const App = () => {
   return (
@@ -22,6 +28,14 @@ const App = () => {
           <Route path="/buy/:courseId" element={<Buy />} />
           <Route path="/purchases" element={<Purchases />} />
 
+
+          {/* Admin Routes */}
+          <Route path="/admin/signup" element = {<AdminSignup />} />
+          <Route path="/admin/login" element = {<AdminLogin />} />
+          <Route path="/admin/dashboard" element = {<AdminDashbord />} />
+          <Route path="/admin/courses" element = {<CourseCreate />} />
+          <Route path="/admin/ourcourses" element = {<OurCourse />} />
+          <Route path="/admin/updatecourse" element = {<UpdateCourse />} />
         </Routes>
         <Toaster />
     </>

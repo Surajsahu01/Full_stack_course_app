@@ -26,6 +26,10 @@ const purchaseSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
+    coursePrice: { 
+        type: Number, 
+        required: true 
+    },
     paymentId: {
         type: String,
         required: true,
