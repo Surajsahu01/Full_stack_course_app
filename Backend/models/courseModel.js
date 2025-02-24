@@ -31,6 +31,14 @@ const CourseSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'Admin'
     },
+    creatorName:{
+        type: String,
+        required: true
+    },
+    creatorEmail: {
+        type: String,
+        required: true
+    },
 }, 
 { 
     timestamps: true 

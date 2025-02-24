@@ -67,7 +67,7 @@ export const adminLogin = async(req, res) => {
             sameSite: "Strict",
         };
 
-        res.cookie("jwt", token);
+        res.cookie("jwt", token, cookiesOptions);
         res.status(201).json({message:"Login Successfully.", user, token})
 
         // res.json({ token, user: { id: user._id, firstname: user.firstname, lastname: user.lastname, email: user.email, password: user.password } });

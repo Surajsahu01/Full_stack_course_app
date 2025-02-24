@@ -4,6 +4,7 @@ import User from "../models/courseModel.js"
 import fs from 'fs';
 import Purchase from '../models/purchaseModel.js';
 import UserDetails from '../models/userModel.js';
+import Admin from '../models/adminModel.js';
 
 // Configure Cloudinary
 cloudinary.v2.config({
@@ -126,11 +127,17 @@ cloudinary.v2.config({
 // };
 
 
-export const addUser = async (req, res) => {
+export const addCourses = async (req, res) => {
     const adminId = req.adminId;
     const { title, description, price } = req.body;
 
     try {
+        const admin = await Admin.findById(adminId);
+        if (!admin) {
+            return res.status(404).json({ error: 'Admin not found' });  
+        }
+        console.log("admin", admin.firstname);
+        
         // Validate input fields
         if (!title || !description || !price) {
             return res.status(400).json({ error: 'All fields are required' });
@@ -147,7 +154,7 @@ export const addUser = async (req, res) => {
         }
 
         // Create user object
-        const user = {
+        const user = new User({
             title,
             description,
             price,
@@ -156,13 +163,16 @@ export const addUser = async (req, res) => {
                 url: cloudinaryResult.url,
             },
             creatorId: adminId,
-        };
+            creatorName: admin.firstname,
+            creatorEmail: admin.email,
+
+        });
 
         // Save user to the database
-        const newUser = await User.create(user);
+        await user.save();
         res.status(201).json({
             message: 'User created successfully',
-            newUser,
+            user,
         });
 
     } catch (error) {
@@ -171,49 +181,81 @@ export const addUser = async (req, res) => {
     }
 };
 
-export const getAllUsers = async (req, res) => {
-        
-        try {
-            const users = await User.find();
-    
-            // Conditional check if no users are found
-            if (users.length === 0) {
-                return res.status(404).json({ message: 'No users found' });
-            }
-    
-            res.status(200).json(users);
-            
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    };
-
 export const updateCourse = async(req, res) => {
     const adminId = req.adminId;
     const { courseId } = req.params;
     const { title, description, price, image} = req.body;
 
     try {
-        const courseSearh = await User.findById(courseId);
-        if(!courseSearh){
-            res.status(404).json({error: "course not found"})
+        // const course = await User.findById(courseId);
+        // if(!course){
+        //     res.status(404).json({error: "course not found"})
+        // }
+
+        // if(course.creatorId.toString() !== adminId){
+        //     return res.status(403).json({error: "You are not authorized to update this course"});
+        // }
+
+        // Step 1: Check if the course exists
+        const existingCourse = await User.findById(courseId);
+        if (!existingCourse) {
+            return res.status(404).json({ error: "Course not found" });
         }
-        const course = await User.updateOne(
-            {
-                _id: courseId,
-                creatorId: adminId,
-            },
-            {
-                title,
-                description,
-                price,
-                image:{
-                    public_id: image?.public_id,
-                    url: image?.url,
-                },
+
+        // Step 2: Ensure only the creator can update the course
+        if (existingCourse.creatorId.toString() !== adminId) {
+            return res.status(403).json({ error: "Unauthorized to update this course" });
+        }
+
+         // Step 3: Prepare update object
+         const updateFields = {};
+         if (title) updateFields.title = title;
+         if (description) updateFields.description = description;
+         if (price) updateFields.price = price;
+ 
+         // Step 4: Handle image update using Cloudinary
+        if (req.file) {  // If a new image file is uploaded
+            // Delete old image from Cloudinary
+            if (existingCourse.image && existingCourse.image.public_id) {
+                await cloudinary.v2.uploader.destroy(existingCourse.image.public_id);
             }
+
+            // Upload new image to Cloudinary
+            const cloudinaryResult = await cloudinary.v2.uploader.upload(req.file.path);
+            if (!cloudinaryResult || cloudinaryResult.error) {
+                return res.status(400).json({ error: 'Error uploading file to Cloudinary' });
+            }
+
+            updateFields.image = {
+                public_id: cloudinaryResult.public_id,
+                url: cloudinaryResult.secure_url,
+            };
+        }
+
+        // const course = await User.updateOne(
+        //     {
+        //         _id: courseId,
+        //         creatorId: adminId,
+        //     },
+        //     {
+        //         title,
+        //         description,
+        //         price,
+        //         image:{
+        //             public_id: image?.public_id,
+        //             url: image?.url,
+        //         },
+        //     }
+        // );
+
+
+        // Step 5: Update the course and return the new updated document
+        const updatedCourse = await User.findByIdAndUpdate(
+            courseId,
+            { $set: updateFields },
+            { new: true, runValidators: true } // Ensures updated document is returned and validated
         );
-        res.status(201).json({message:"Course Update Succecfully", course})
+        res.status(200).json({message:"Course Update Succecfully", updatedCourse })
         
     } catch (error) {
         res.status(500).json({error:"Error is course updating"})
@@ -221,23 +263,28 @@ export const updateCourse = async(req, res) => {
         
     }
 };
-    
-
+   
 export const deletCourse = async(req, res) =>{
     const adminId = req.adminId;
     const {courseId} = req.params;
     try {
-        const courseSearh = await User.findById(courseId);
-        if(!courseSearh){
+        const course = await User.findById(courseId);
+        if(!course){
             res.status(404).json({error: "course not found"})
         }
-        const course = await User.findByIdAndDelete({
-            _id: courseId,
-            creatorId: adminId,
-        })
-        if(!course){
-            return res.status(404).json({error:"Course not Found"})
+        // const course = await User.findByIdAndDelete({
+        //     _id: courseId,
+        //     creatorId: adminId,
+        // })
+        // if(!course){
+        //     return res.status(404).json({error:"Course not Found"})
+        // }
+
+        if (course.creatorId.toString() !== adminId) {
+            return res.status(403).json({ error: 'You are not authorized to delete this course' });
+            
         }
+        await User.findByIdAndDelete(courseId);
         res.status(200).json({message:"Course delete successfully"})
         
     } catch (error) {
@@ -246,6 +293,29 @@ export const deletCourse = async(req, res) =>{
         
     }
 
+};
+
+export const getAllCourse = async (req, res) => {
+        
+    try {
+        // const adminId = req.adminId; 
+
+        // if (!adminId) {
+        //     return res.status(403).json({ message: "Unauthorized access" });
+        // }
+
+        const course = await User.find();
+
+        // Conditional check if no users are found
+        if (course.length === 0) {
+            return res.status(404).json({ message: 'No users found' });
+        }
+
+        res.status(200).json(course);
+        
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 export const courseDetails = async(req, res) =>{
@@ -321,6 +391,7 @@ export const courseDetails = async(req, res) =>{
 
 
 import Stripe from "stripe"
+import { create } from 'domain';
 const stripe = new Stripe(process.env.STRIP_KEY);
 console.log(process.env.STRIP_KEY);
 
