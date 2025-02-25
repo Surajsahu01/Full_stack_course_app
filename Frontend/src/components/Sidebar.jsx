@@ -33,6 +33,7 @@ const Sidebar = () => {
       });
       toast.success("Logout Successful", response.data.message);
       localStorage.removeItem("user");
+      localStorage.removeItem("id");
       setIsLogedIn(false);
     } catch (error) {
       console.log("Error in logging out", error);

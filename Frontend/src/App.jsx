@@ -16,6 +16,10 @@ import OurCourse from "./admin/OurCourse";
 import UpdateCourse from "./admin/UpdateCourse";
 
 const App = () => {
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const admin = JSON.parse(localStorage.getItem("AdminUser"));
+
   return (
     <> 
         <Routes>
@@ -35,7 +39,7 @@ const App = () => {
           <Route path="/admin/dashboard" element = {<AdminDashbord />} />
           <Route path="/admin/courses" element = {<CourseCreate />} />
           <Route path="/admin/ourcourses" element = {<OurCourse />} />
-          <Route path="/admin/updatecourse" element = {<UpdateCourse />} />
+          <Route path="/admin/updatecourse/:courseId" element = {<UpdateCourse />} />
         </Routes>
         <Toaster />
     </>

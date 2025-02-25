@@ -6,7 +6,6 @@ import courseRouter from './routers/courseRouter.js';
 import userRouter from "./routers/userRouter.js"
 import adminRouter from "./routers/adminRoutes.js"
 import cookieParser from 'cookie-parser';
-import orderRouter from "./routers/orderRoute.js"
 
 // import fileUplode from "express-fileupload";
 dotenv.config();
@@ -20,7 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true,
-    methods: "GET,PUT,POST,DELETE"
+    methods: "GET,PUT,POST,DELETE",
+    allowedHeaders: ["Content-Type", "Authorization"],
 
 }));
 
@@ -31,7 +31,7 @@ connectDB();
 app.use('/v1/users', userRouter);
 app.use('/v1/course', courseRouter);
 app.use('/v1/admin', adminRouter);
-app.use('/v1/order', orderRouter);
+
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {

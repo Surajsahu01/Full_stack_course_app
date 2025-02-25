@@ -14,7 +14,7 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("Login Data:", { email, password });
+  
 
     try {
       const response = await axios.post("http://localhost:5000/v1/admin/login", {
@@ -31,7 +31,7 @@ const AdminLogin = () => {
       console.log("loging Successfully:", response.data);
 
       localStorage.setItem("AdminUser", JSON.stringify(response.data));
-    //   localStorage.setItem("id", JSON.stringify(response.data.user.firstname));
+      localStorage.setItem("id", JSON.stringify(response.data.user.firstname));
       // alert(response.data.message); 
       toast.success(response.data.message);
 

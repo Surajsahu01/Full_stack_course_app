@@ -198,7 +198,7 @@ const Home = () => {
                             </h1>
                         </div> */}
                         <div className="p-2 text-center overflow-hidden whitespace-nowrap cursor-grab active:cursor-grabbing select-none">
-                          <h1 className="inline-block">{course.description}</h1>
+                          <h1 className="inline-block">{course.title}</h1>
                         </div>
                         {/* <div className=" text-center">
                           <h1>{course.price}</h1>
