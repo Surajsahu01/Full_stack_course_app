@@ -6,14 +6,14 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const OurCourse = () => {
   const [course, setCourse] = useState([]);
-  // const [logging, setLoging] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [expandedCourse, setExpandedCourse] = useState(null);
   const navigate = useNavigate();
 
   const admin = JSON.parse(localStorage.getItem("AdminUser"));
   const token = admin?.token;
   const adminId = admin?.user._id; // Extract adminId
-  console.log(adminId);
+
 
   useEffect(() => {
         if (!token ) {
@@ -35,7 +35,7 @@ const OurCourse = () => {
       );
         const adminCourse = response.data.filter(user => user.creatorId === adminId);
         setCourse(adminCourse);
-        console.log(adminCourse);
+        console.log("course:",adminCourse);
         
         // console.log(response.data);
         
@@ -71,53 +71,78 @@ const deleteCourse = async (id) => {
 if(loading) {
   return <h1>Loading...</h1>
 }
-  
 
   return (
-    <div className='bg-gray-100 h-screen p-8 space-y-4'>
-      <h1 className='text-2xl font-bold text-center mb-8'>Our Course</h1>
-      <Link 
-      className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mb-4" 
-      to="/admin/dashboard">
-      Go to dashboard
+    <div className="bg-gray-100 min-h-screen p-8 space-y-4">
+      <h1 className="text-4xl font-bold text-center mb-8">Our Courses</h1>
+      <Link
+        className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mb-4"
+        to="/admin/dashboard"
+      >
+        Go to Dashboard
       </Link>
 
-      <div className='mt-10' >
-      {loading ? (
-                  <div className="flex justify-center items-center h-40">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
-                  </div>
-                ) :
-                 (
-      
-                  <div className="grid grid-cols-4 gap-5">
-                    {
-                    course.length > 0 ? (
-                      course.map((course) => (
-                        <div key={course._id} className="bg-white p-6 shadow-md rounded-lg text-center">
-                          <img
-                            src={course.image.url || "https://via.placeholder.com/120"}
-                            alt={course.title}
-                            className="w-50 h-30 object-cover mx-auto rounded-md mb-3"
-                          />
-                          <h3 className="text-sm font-semibold">{course.title}</h3>
-                          <p className="text-gray-500 text-xs truncate">{course.description}</p>
-                          <p className="text-green-600 font-semibold mt-2 mb-4">Rs.{course.price}</p>
+      <div className="mt-10">
+        {loading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+            {course.length > 0 ? (
+              course.map((course) => (
+                <div key={course._id} className="p-4 mb-10">
+                  <div className="relative flex-shrink-0 w-80 transition-transform">
+                    <div className="bg-white rounded-lg overflow-hidden w-80 h-auto shadow-lg">
+                      <img
+                        src={course?.image?.url || "https://via.placeholder.com/120"}
+                        alt={course.title}
+                        className="w-full h-40 object-cover mx-auto rounded-t-lg"
+                      />
+                      <div className="p-4">
+                        <h3 className="text-xl font-semibold">{course.title}</h3>
+                        <p className="text-gray-500 text-sm">
+                          {expandedCourse === course._id
+                            ? course.description
+                            : `${course.description.substring(0, 50)}...`}
+                        </p>
+                        <button
+                          className="text-blue-500 text-sm mt-1"
+                          onClick={() =>
+                            setExpandedCourse(expandedCourse === course._id ? null : course._id)
+                          }
+                        >
+                          {expandedCourse === course._id ? "Read Less" : "Read More"}
+                        </button>
+                        <p className="text-green-600 font-semibold px-2 mt-4">
+                          Rs. {course.price}
+                        </p>
+
+                        <div className="flex justify-between mt-4">
+                          <Link
+                            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full ml-2"
+                            to={`/admin/updatecourse/${course._id}`}
+                          >
+                            Update
+                          </Link>
+
                           <button
-                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full mr-2"
                             onClick={() => deleteCourse(course._id)}
                           >
                             Delete
                           </button>
-                          
                         </div>
-                        
-                      ))
-                    ) : (
-                      <p>No courses found.</p>
-                    )}
+                      </div>
+                    </div>
                   </div>
-                )}
+                </div>
+              ))
+            ) : (
+              <p>No courses found.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
