@@ -196,7 +196,7 @@ const stripe = new Stripe(process.env.STRIP_KEY);
 console.log(process.env.STRIP_KEY);
 
 export const buyCourse = async(req,res) => {
-        const {courseId} = req.params;
+        const {courseId} = req.body;
       
     try {
         // console.log("User ID from middleware:", req.userId); // Debugging
@@ -251,7 +251,7 @@ export const confirmPurchase = async (req, res) => {
 
         // Fetch user details
         const userinfo = await UserDetails.findById(userId).select("firstname lastname email");
-        console.log("Fetched User Data:", userinfo); // Debugging
+        // console.log("Fetched User Data:", userinfo); // Debugging
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
