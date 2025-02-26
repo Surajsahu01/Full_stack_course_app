@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import logo from '../assets/download.png';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
+// import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
+import { BACKEND_URL } from "../utils/utils";
 
 
 const Signup = () => {
@@ -21,7 +22,7 @@ const Signup = () => {
     navigate(role === "user" ? "/singup" : "/admin/signup");
     console.log(`Logging in as ${role}:`, { email, password });
     try {
-      const response = await axios.post("http://localhost:5000/v1/users/signup", {
+      const response = await axios.post(`${BACKEND_URL}/users/signup`, {
         firstname,
         lastname,
         email,
