@@ -19,20 +19,21 @@ const Home = () => {
   
 
   useEffect(()=>{
-    const token = localStorage.getItem("user");
-    if(token){
-      setIsLogedIn(true);
-      let storedUserName = localStorage.getItem("id");
-      if (storedUserName) {
-        storedUserName = storedUserName.replace(/['"]+/g, ''); // Remove extra quotes
-        storedUserName = storedUserName.charAt(0).toUpperCase() + storedUserName.slice(1).toLowerCase(); // Capitalize first letter
-      }
-      setUserName(storedUserName || "");
-    }else{
-      setIsLogedIn(false);
-
-    }
-  },[])
+       const token = localStorage.getItem("user");
+       if(token){
+         setIsLogedIn(true);
+         let storedUserName = localStorage.getItem("id");
+         
+         if (storedUserName) {
+           storedUserName = storedUserName.replace(/['"]+/g, ''); // Remove extra quotes
+           storedUserName = storedUserName.charAt(0).toUpperCase() + storedUserName.slice(1).toLowerCase(); // Capitalize first letter
+         }
+         setUserName(storedUserName || "");
+         
+       }else{
+         setIsLogedIn(false);
+       }
+     },[]);
 
 
   const handelLogout = async()=>{
@@ -42,6 +43,7 @@ const Home = () => {
       })
       toast.success("Logout Successfull",response.data.messsage);
       localStorage.removeItem("user");
+      localStorage.removeItem("id");
       setIsLogedIn(false);
     } catch (error) {
       console.log("Error in loging out", error);
@@ -58,7 +60,7 @@ const Home = () => {
           }
         );
         
-        console.log(response.data);
+        // console.log(response.data);
         setCourses(response.data);
       } catch (error) {
         console.log("error in fetching",error);
@@ -73,15 +75,15 @@ const Home = () => {
     infinite: false,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 3,
+    slidesToScroll: 2,
     initialSlide: 0,
     autoplay: true,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
+          slidesToShow: 2,
+          slidesToScroll: 2,
           infinite: true,
           dots: true
         }
@@ -91,14 +93,16 @@ const Home = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          initialSlide: 2
+          initialSlide: 2,
+          centerMode: true
         }
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
+          slidesToScroll: 1,
+          centerMode: true
         }
       }
     ]
@@ -119,7 +123,7 @@ const Home = () => {
           </div>
 
 
-          <div className="flex space-x-2 ">
+          <div className="flex space-x-2  font-semibold size-sm">
             {isLogedIn? (
               <div className="flex space-x-4 ">
               <button onClick={handelLogout}
@@ -129,24 +133,24 @@ const Home = () => {
             {
               isLogedIn && (
                 <div  className="flex items-center space-x-4">
-                  <p className="text-gray-300 hover:text-gray-200">Welcome {userName}</p>
+                  <p className="text-gray-300 hover:text-gray-200">Welcome, {userName}</p>
                   {/* <Link to="/purchases" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Purchases</Link> */}
                 </div>
                 )
             }
             </div>
             ): 
-            (< div className="flex space-x-4 ">
+            (< div className="flex space-x-2 mr-4">
             <Link 
             to="/login"  
-            className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">
+            className="bg-transparent text-white py-2 px-4 border border-white  hover:text-gray-300 rounded-lg ">
               Login
               </Link>
               
 
             <Link 
             to="/Signup" 
-            className="bg-transparent text-white py-2 px-4 border border-white rounded hover:text-gray-300">
+            className="bg-transparent text-white py-2 px-4 border border-white rounded-lg hover:text-gray-300 ">
               Signup
               </Link>
             </div>
@@ -160,7 +164,7 @@ const Home = () => {
         <section className="text-center py-20">
             <h1 className="text-4xl text-orange-600 font-bold">CoursHaven</h1>
             <br />
-            <p className="text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
+            <p className="text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque rem quod placeat necessitatibus corporis corrupti nisi quam eos! Eum ab laborum nostrum cumque neque, qui enim illo animi ea consequuntur reprehenderit molestias voluptatem fuga exercitationem necessitatibus fugit non saepe omnis error laudantium unde. Ex autem dolor numquam hic molestiae adipisci? </p>
             <div className="py-6 space-x-8">
               <Link to={"/courses"}
               className="bg-green-500 font-semibold cursor-pointer py-2 px-4 duration-200
@@ -184,27 +188,19 @@ const Home = () => {
                 courses.map((course)=>(
                   <div key={course._id} className=" p-4 mb-12">
                     <div className="relative flex-shrink-0 w-64 transition-transform duration-300 transform hover:scale-105 ">
-                      <div className="bg-gray-900 rounded-lg overflow-hidden w-[250px] h-[220px]">
+                    <div className="bg-gray-900 rounded-lg overflow-hidden w-[250px] h-[260px] flex flex-col items-center">
                         
                         <img 
                         src={course.image.url} 
                         alt="" 
-                        className=" mt-4 h-28 w-full object-contain"/>
+                        className="h-[140px] w-[235px] object-cover mt-2"/>
                         
-                        {/* <div className="p-2 text-center">
-                          <h1 
-                          className="text-xl font-semibold text-white">
-                            {course.title}
-                            </h1>
-                        </div> */}
                         <div className="p-2 text-center overflow-hidden whitespace-nowrap cursor-grab active:cursor-grabbing select-none">
-                          <h1 className="inline-block">{course.title}</h1>
+                          <h1 className="inline-block text-white">{course.title}</h1>
                         </div>
-                        {/* <div className=" text-center">
-                          <h1>{course.price}</h1>
-                        </div> */}
-                        <div className="mt-2 bg-orange-500 text-white text-center py-2 px-4 rounded-full hover:bg-blue-500 duration-300">
-                          <button>Enroll Now</button>
+                        
+                        <div className="mt-auto bg-orange-500 text-white text-center py-2 px-4 rounded-full hover:bg-blue-500 duration-300 mb-4">
+                          <Link to={`/buy/${course._id}`}>Enroll Now</Link>
                         </div>
                       </div>
                     </div>
@@ -222,55 +218,47 @@ const Home = () => {
         {/* Footer */}
 
       <hr />
-      <footer className="py-8">
-        <div className=" grid grid-cols-1 md:grid-cols-3">
-          <div className="flex flex-col items-center md:items-start">
-            <div className="flex items-center space-x-2 ">
-                <img src={logo} alt="" className="h-7 w-7 rounded-full "/>
-                <h1 className="text-[18px] text-orange-500 font-bold ">CourseHaven</h1>
-
-             </div>
-
-              <div className="mt-2 ml-2 md:ml-8">
-                    <p className="mb-2">Follow us</p>
-                        <div className="flex space-x-4 ">
-                            <a href="">
-                              <FaFacebook className="hover:text-blue-400"/>
-                              </a>
-                            <a href="">
-                              <FaInstagram className="hover:text-pink-800"/>
-                              </a>
-                            <a href="">
-                              <FaTwitter className="hover:text-blue-400"/>
-                              </a>
-                        </div>
-                  </div>
-              </div>
-
-            <div className="items-center flex flex-col ">
-                <h1 className="text-xl font-semibold mb-4 ">
-                  Conects
-                </h1>
-                <ul className="space-y-2 text-gray-400">
-                  <li className="hover:text-white duration-300 cursor-pointer">Youtube- Learn </li>
-                  <li className="hover:text-white duration-300 cursor-pointer">Telegam- Learn</li>
-                  <li className="hover:text-white duration-300 cursor-pointer">Github-  Learn</li>
-                </ul>
-              </div>
-
-
-              <div className="items-center flex flex-col ">
-                <h1 className="text-xl font-semibold mb-4 ">Copyright &#169; 2024
-                </h1>
-                <ul className="px-1 space-y-2 text-gray-400">
-                  <li className="hover:text-white duration-300 cursor-pointer">Term & Condition </li>
-                  <li className="hover:text-white duration-300 cursor-pointer">Privacy Policy</li>
-                  <li className="hover:text-white duration-300 cursor-pointer">Refund & Concellection</li>
-                </ul>
-              </div>
-            
+      <footer className="py-8 bg-transparent text-white">
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left container mx-auto px-6">
+    
+    {/* Left Section */}
+    <div className="flex flex-col items-center md:items-start space-y-4">
+      <div className="flex items-center space-x-2">
+        <img src={logo} alt="Logo" className="h-7 w-7 rounded-full" />
+        <h1 className="text-[18px] text-orange-500 font-bold">CourseHaven</h1>
+      </div>
+      <div className="mt-2">
+        <p className="mb-2">Follow us</p>
+        <div className="flex space-x-4">
+          <a href="#"><FaFacebook className="hover:text-blue-400" /></a>
+          <a href="#"><FaInstagram className="hover:text-pink-800" /></a>
+          <a href="#"><FaTwitter className="hover:text-blue-400" /></a>
         </div>
-      </footer>
+      </div>
+    </div>
+
+    {/* Middle Section */}
+    <div className="flex flex-col items-center md:items-center space-y-4">
+      <h1 className="text-xl font-semibold">Connects</h1>
+      <ul className="space-y-2 text-gray-400">
+        <li className="hover:text-white duration-300 cursor-pointer">YouTube - Learn</li>
+        <li className="hover:text-white duration-300 cursor-pointer">Telegram - Learn</li>
+        <li className="hover:text-white duration-300 cursor-pointer">GitHub - Learn</li>
+      </ul>
+    </div>
+
+    {/* Right Section */}
+    <div className="flex flex-col items-center md:items-end space-y-4">
+      <h1 className="text-xl font-semibold">Copyright &#169; 2024</h1>
+      <ul className="space-y-2 text-gray-400">
+        <li className="hover:text-white duration-300 cursor-pointer">Terms & Conditions</li>
+        <li className="hover:text-white duration-300 cursor-pointer">Privacy Policy</li>
+        <li className="hover:text-white duration-300 cursor-pointer">Refund & Cancellation</li>
+      </ul>
+    </div>
+
+  </div>
+</footer>
         
       </div>
     </div>

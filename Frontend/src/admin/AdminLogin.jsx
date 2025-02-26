@@ -11,9 +11,12 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [errorMessege, setErrorMessege] = useState("");
+  const [role, setRole] = useState("admin");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(`Logging in as ${role}:`, { email, password });
+    navigate(role === "user" ? "/login" : "/admin/login");
   
 
     try {
@@ -31,7 +34,7 @@ const AdminLogin = () => {
       console.log("loging Successfully:", response.data);
 
       localStorage.setItem("AdminUser", JSON.stringify(response.data));
-      localStorage.setItem("id", JSON.stringify(response.data.user.firstname));
+      localStorage.setItem("AdminId", JSON.stringify(response.data.user.firstname));
       // alert(response.data.message); 
       toast.success(response.data.message);
 
@@ -64,7 +67,7 @@ const AdminLogin = () => {
               </h1>
             </div>
     
-            <div className="flex gap-4">
+            <div className="flex gap-2">
               <Link to="/admin/signup" className="bg-transparent text-white py-2 px-4 border  rounded hover:text-gray-300">
                 Signup
               </Link>
@@ -77,7 +80,27 @@ const AdminLogin = () => {
           {/* Login Form */}
           <div className="flex flex-grow justify-center items-center h-screen">
             <div className="w-full max-w-md bg-white/10 p-6 rounded-lg shadow-md backdrop-blur-lg">
-              <h2 className="text-2xl font-bold text-center text-white">Login</h2>
+              <h2 className="text-2xl font-bold text-center text-white">{role === "user" ? "User Login" : "Admin Login"}</h2>
+
+                {/* Toggle Button */}
+                      <div className="flex justify-center mt-4 mb-4">
+                        <Link to={"/login"}
+                          className={`${role === "user" 
+                            ? "bg-white/11 text-richblack-5"
+                            : "bg-transparent text-richblack-200"} py-2 px-5 rounded-full transition-all duration-200`}
+                          onClick={() => setRole("user")}
+                        >
+                          User
+                        </Link>
+                        <Link to={"/admin/login"}
+                          className={`${role === "admin" 
+                            ? "bg-white/11 text-richblack-5"
+                            : "bg-transparent text-richblack-200"} py-2 px-5 rounded-full transition-all duration-200`}
+                          onClick={() => setRole("admin")}
+                        >
+                          Admin
+                        </Link>
+                        </div>
     
               <form onSubmit={handleSubmit} className="mt-4">
                 <div>

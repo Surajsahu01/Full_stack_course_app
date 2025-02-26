@@ -15,7 +15,7 @@ const AdminDashbord = () => {
         
         if(token){
           setIsLogedIn(true);
-          let storedUserName = localStorage.getItem("id");
+          let storedUserName = localStorage.getItem("AdminId");
           if (storedUserName) {
             storedUserName = storedUserName.replace(/['"]+/g, ''); // Remove extra quotes
             storedUserName = storedUserName.charAt(0).toUpperCase() + storedUserName.slice(1).toLowerCase(); // Capitalize first letter

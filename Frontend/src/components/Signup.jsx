@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from '../assets/download.png';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
 
 
 const Signup = () => {
@@ -9,17 +10,16 @@ const Signup = () => {
   const [lastname, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("")
+  const [role, setRole] = useState("user");
   const navigate = useNavigate();
   const [errorMessege, setErrorMessege] = useState("");
-  // const [successMessege, setSuccessMessege] = useState("");
+  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (password !== confirmPassword) {
-    //   alert("Passwords do not match!");
-    //   return;
-    // }
+    navigate(role === "user" ? "/singup" : "/admin/signup");
+    console.log(`Logging in as ${role}:`, { email, password });
     try {
       const response = await axios.post("http://localhost:5000/v1/users/signup", {
         firstname,
@@ -56,7 +56,7 @@ const Signup = () => {
   };
   return (
     <>
-
+    
   <div className="bg-gradient-to-r from-black to-blue-950 ">
   <div className="min-h-screen text-white container mx-auto ">
       {/* Navbar */}
@@ -81,7 +81,25 @@ const Signup = () => {
       {/* Signup Form */}
       <div className="flex flex-grow justify-center items-center h-screen">
         <div className="w-full max-w-md bg-white/10 p-6 rounded-lg shadow-md backdrop-blur-lg">
-          <h2 className="text-2xl font-bold text-center text-white">Signup</h2>
+          <h2 className="text-2xl font-bold text-center text-white">{role === "user" ? "User Sign Up" : "Admin Sign Up"}</h2>
+          <div className="flex justify-center mt-4 mb-4">
+                                  <Link to={"/singup"}
+                                    className={`${role === "user" 
+                                      ? "bg-white/11 text-richblack-5"
+                                      : "bg-transparent text-richblack-200"} py-2 px-5 rounded-full transition-all duration-200`}
+                                    onClick={() => setRole("user")}
+                                  >
+                                    User
+                                  </Link>
+                                  <Link to={"/admin/signup"}
+                                    className={`${role === "admin" 
+                                      ? "bg-white/11 text-richblack-5"
+                                      : "bg-transparent text-richblack-200"} py-2 px-5 rounded-full transition-all duration-200`}
+                                    onClick={() => setRole("admin")}
+                                  >
+                                    Admin
+                                  </Link>
+                                  </div>
 
           <form onSubmit={handleSubmit} className="mt-4">
             <div>
@@ -133,18 +151,7 @@ const Signup = () => {
                 required
               />
             </div>
-            {/* <div className="mt-4">
-              <label className="block text-white">Confirm Password</label>
-              <input 
-                type="password"
-                id="confirmPassword"
-                className="w-full px-4 py-2 mt-2 border border-white rounded-lg bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                placeholder="Confirm password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div> */}
+            
 
             {
               errorMessege && (
@@ -155,16 +162,6 @@ const Signup = () => {
                 </div>
               )
             }
-
-            {/* {
-              successMessege && (
-                <div className="text-green-500 mt-4 text-center">
-                  {
-                    successMessege 
-                  }
-                </div>
-              )
-            } */}
             <button type="submit" className="w-full bg-blue-500 text-white px-4 py-2  mt-5 rounded-lg hover:bg-blue-600 duration-300">
               Signup
             </button>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import toast from "react-hot-toast";
 import Sidebar from "./Sidebar";
 
@@ -43,17 +43,24 @@ const Purchases = () => {
         fetchPurchases();
     }, [navigate]); // Depend on navigate to avoid unnecessary re-renders
 
+
     return (
         <div className="flex h-screen bg-gray-100">
             <Sidebar />
 
             <div className="flex-1 flex flex-col">
-                <nav className="bg-white shadow-md p-4  flex justify-between items-center">
-                    <h2 className="text-xl font-bold">My Purchases</h2>
+                <nav className="bg-white shadow-md p-5  flex justify-between items-center md:justify-between">
+                    <h2 className="text-xl font-bold text-gray-800 text-center w-full">My Purchases</h2>
                 </nav>
 
                 <div className="p-5">
-                    <h2 className="text-2xl font-bold mb-4">Purchased Courses</h2>
+                    {/* <h2 className="text-2xl font-bold mb-4">Purchased Courses</h2> */}
+                    <Link
+                            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg mb-4"
+                            to="/courses"
+                        >
+                            Go to Courses Page
+                        </Link>
 
                     {loading ? (
                         <div className="flex justify-center items-center h-40">
@@ -62,7 +69,7 @@ const Purchases = () => {
                     ) : errorMessage ? (
                         <p className="text-red-500">{errorMessage}</p>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-10 ">
                             {purchases.length > 0 ? (
                                 purchases.map((course) => (
                                     <div key={course._id} className="bg-white p-2 md:p-6 shadow-md rounded-lg text-center">

@@ -26,6 +26,7 @@ const OurCourse = () => {
  
   // fetch course
     const fetchCourse = async () => {
+      
       try {
         const response = await axios.get("http://localhost:5000/v1/course/show", 
           {
@@ -73,8 +74,8 @@ if(loading) {
 }
 
   return (
-    <div className="bg-gray-100 min-h-screen p-8 space-y-4">
-      <h1 className="text-4xl font-bold text-center mb-8">Our Courses</h1>
+    <div className="bg-gray-100 min-h-full md:h-screen  space-y-4">
+      <h1 className="text-2xl font-semibold md:text-4xl md:font-bold text-center mb-8 ">My Courses</h1>
       <Link
         className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mb-4"
         to="/admin/dashboard"
@@ -88,16 +89,16 @@ if(loading) {
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 items-center ">
             {course.length > 0 ? (
               course.map((course) => (
-                <div key={course._id} className="p-4 mb-10">
+                <div key={course._id} className="bg-gray-100 p-4 shadow-md rounded-lg  ">
                   <div className="relative flex-shrink-0 w-80 transition-transform">
-                    <div className="bg-white rounded-lg overflow-hidden w-80 h-auto shadow-lg">
+                    <div className="bg-gray-100 rounded-lg overflow-hidden w-80 h-auto shadow-lg">
                       <img
                         src={course?.image?.url || "https://via.placeholder.com/120"}
                         alt={course.title}
-                        className="w-full h-40 object-cover mx-auto rounded-t-lg"
+                        className="w-50 h-30 md:w-80 md:h-40 object-cover mx-auto rounded-md mb-3"
                       />
                       <div className="p-4">
                         <h3 className="text-xl font-semibold">{course.title}</h3>

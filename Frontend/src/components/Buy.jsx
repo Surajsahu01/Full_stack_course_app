@@ -7,7 +7,6 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 const Buy = () => {
     const { courseId } = useParams();
     const navigate = useNavigate();
-    // const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(false);
     const [course, setCourse] = useState(null);
     const [clientSecret, setClientSecret] = useState("");
@@ -21,17 +20,13 @@ const Buy = () => {
     const stripe = useStripe();
     const elements = useElements();
     
-    // useEffect(() => { 
-    //     if (user && user.token) {
-    //         setIsLoggedIn(true);
-    //     } else {
-    //         setIsLoggedIn(false);
-    //     }
-    // }, []);
+    
 
     useEffect(() => {
         const fetchBuyCourse = async () => {
-            const user = JSON.parse(localStorage.getItem("user"));
+            // const user = JSON.parse(localStorage.getItem("user"));
+            
+              
         
             if (!user || !user.token) {
                 toast.error("Please login to buy this course");
@@ -42,8 +37,8 @@ const Buy = () => {
             try {
                 const token = user.token;
                 const response = await axios.post(
-                    `http://localhost:5000/v1/course/buy/${courseId}`,
-                    {},
+                    `http://localhost:5000/v1/course/buy`,
+                    {courseId},
                     {
                         headers: { Authorization: `Bearer ${token}` },
                         withCredentials: true,
@@ -66,7 +61,7 @@ const Buy = () => {
             }
         };
         fetchBuyCourse();
-    }, [courseId]);
+    }, []);
 
     const handleBuy = async (event) => {
         event.preventDefault();
