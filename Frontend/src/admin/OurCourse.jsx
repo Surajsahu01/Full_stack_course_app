@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {  useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import { BACKEND_URL } from '../utils/utils';
 
 
 const OurCourse = () => {
@@ -28,7 +29,7 @@ const OurCourse = () => {
     const fetchCourse = async () => {
       
       try {
-        const response = await axios.get("http://localhost:5000/v1/course/show", 
+        const response = await axios.get(`${BACKEND_URL}/course/show`, 
           {
             headers: { Authorization: `Bearer ${token}` },
             withCredentials: true,
@@ -53,7 +54,7 @@ const OurCourse = () => {
 const deleteCourse = async (id) => {
   try {
     const response = await axios.delete(
-      `http://localhost:5000/v1/course/delete/${id}`, 
+      `${BACKEND_URL}/course/delete/${id}`, 
     {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,

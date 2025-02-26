@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
+import { BACKEND_URL } from '../utils/utils';
 
 const UpdateCourse = () => {
   const { courseId } = useParams();
@@ -27,7 +28,7 @@ const UpdateCourse = () => {
     const fechCourse = async () =>{
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:5000/v1/course/show/${courseId}`,{
+        const response = await axios.get(`${BACKEND_URL}/course/show/${courseId}`,{
           headers: {
             Authorization: `Bearer ${token}`, // if token is needed
           },
@@ -87,7 +88,7 @@ const UpdateCourse = () => {
 
     try {
       
-      const response = await axios.put(`http://localhost:5000/v1/course/update/${courseId}`, formData, {
+      const response = await axios.put(`${BACKEND_URL}/course/update/${courseId}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           // "Content-Type": "multipart/form-data",

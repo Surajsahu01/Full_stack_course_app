@@ -5,6 +5,7 @@ import { FaHome, FaSearch, FaDownload, FaCog, FaSignInAlt, FaSignOutAlt,FaBars,F
 import { MdCreateNewFolder} from "react-icons/md";
 import logo from "../assets/download.png";
 import toast from "react-hot-toast";
+import { BACKEND_URL } from '../utils/utils';
 
 const AdminSidebar = () => {
 
@@ -34,12 +35,12 @@ const AdminSidebar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/v1/admin/logout", {
+      const response = await axios.get(`${BACKEND_URL}/admin/logout`, {
         withCredentials: true,
       });
       toast.success(`Logout Successful ${userName}`, response.data.message, { duration: 3000 } );
       localStorage.removeItem("AdminUser");
-      localStorage.removeItem("id");
+      localStorage.removeItem("AdminId");
       navigate("/admin/login");
       setIsLogedIn(false);
     } catch (error) {

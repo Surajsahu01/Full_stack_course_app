@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import {Menu} from "lucide-react";
 import { FaSearch } from "react-icons/fa";
+import { BACKEND_URL } from "../utils/utils";
 
 
 
@@ -48,7 +49,7 @@ const Courses = () => {
         const fetchCourses = async()=>{
             setLoading(true); 
           try {
-            const response = await axios.get("http://localhost:5000/v1/course/show",
+            const response = await axios.get(`${BACKEND_URL}/course/show`,
               {
                 withCredentials: true
               }

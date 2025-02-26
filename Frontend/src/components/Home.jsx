@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import toast from "react-hot-toast";
+import { BACKEND_URL } from "../utils/utils";
 
 const Home = () => {
   
@@ -38,7 +39,7 @@ const Home = () => {
 
   const handelLogout = async()=>{
     try {
-      const response = await axios.get("http://localhost:5000/v1/users/logout",{
+      const response = await axios.get(`${BACKEND_URL}/users/logout`,{
         withCredentials: true,
       })
       toast.success("Logout Successfull",response.data.messsage);
@@ -54,7 +55,7 @@ const Home = () => {
   useEffect(()=>{
     const fetchCourses = async()=>{
       try {
-        const response = await axios.get("http://localhost:5000/v1/course/show",
+        const response = await axios.get(`${BACKEND_URL}/course/show`,
           {
             withCredentials: true
           }

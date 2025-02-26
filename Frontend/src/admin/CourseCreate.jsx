@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from 'react-router-dom';
+import { BACKEND_URL } from '../utils/utils';
 
 const CourseCreate = () => {
   const [title, setTitle] = useState("");
@@ -43,7 +44,7 @@ const CourseCreate = () => {
       formData.append("price", price);
     try {
       
-      const response = await axios.post("http://localhost:5000/v1/course/create", formData, {
+      const response = await axios.post(`${BACKEND_URL}/course/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

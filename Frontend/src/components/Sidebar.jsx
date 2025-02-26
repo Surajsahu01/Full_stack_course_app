@@ -4,6 +4,7 @@ import { FaHome, FaSearch, FaDownload, FaCog, FaSignInAlt, FaSignOutAlt,FaBars,F
 import logo from "../assets/download.png";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { BACKEND_URL } from "../utils/utils";
 
 const Sidebar = () => {
   const [isLogedIn, setIsLogedIn] = useState(false);
@@ -30,7 +31,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/v1/users/logout", {
+      const response = await axios.get(`${BACKEND_URL}/users/logout`, {
         withCredentials: true,
       });
       toast.success("Logout Successful", response.data.message);

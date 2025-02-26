@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/download.png';
 import axios from "axios";
+import { BACKEND_URL } from '../utils/utils';
 
 const AdminSignup = () => {
   const [firstname, setFirstName] = useState("");
@@ -18,7 +19,7 @@ const AdminSignup = () => {
     console.log(`Logging in as ${role}:`, { email, password });
     
     try {
-      const response = await axios.post("http://localhost:5000/v1/admin/signup", {
+      const response = await axios.post(`${BACKEND_URL}/admin/signup`, {
         firstname,
         lastname,
         email,

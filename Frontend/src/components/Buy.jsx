@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { BACKEND_URL } from "../utils/utils";
 
 const Buy = () => {
     const { courseId } = useParams();
@@ -37,7 +38,7 @@ const Buy = () => {
             try {
                 const token = user.token;
                 const response = await axios.post(
-                    `http://localhost:5000/v1/course/buy`,
+                    `${BACKEND_URL}/course/buy`,
                     {courseId},
                     {
                         headers: { Authorization: `Bearer ${token}` },
@@ -123,7 +124,7 @@ const Buy = () => {
             setPaymentId(paymentIntent.id);
             try {
                 const response = await axios.post(
-                    `http://localhost:5000/v1/course/confirmPurchase`,
+                    `${BACKEND_URL}/course/confirmPurchase`,
                     {
                         paymentIntentId: paymentIntent.id,
                         courseId: courseId,

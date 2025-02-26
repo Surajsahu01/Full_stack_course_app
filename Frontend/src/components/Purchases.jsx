@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for redirection
 import toast from "react-hot-toast";
 import Sidebar from "./Sidebar";
+import { BACKEND_URL } from '../utils/utils';
 
 const Purchases = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,7 +26,7 @@ const Purchases = () => {
 
         const fetchPurchases = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/v1/users/purchase", {
+                const response = await axios.get(`${BACKEND_URL}/users/purchase`, {
                     headers: { Authorization: `Bearer ${token}` },
                     withCredentials: true,
                 });

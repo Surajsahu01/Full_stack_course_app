@@ -3,6 +3,7 @@ import logo from '../assets/download.png';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from 'react-hot-toast';
+import { BACKEND_URL } from "../utils/utils";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ const Login = () => {
     console.log(`Logging in as ${role}:`, { email, password });
 
     try {
-      const response = await axios.post("http://localhost:5000/v1/users/login", {
+      const response = await axios.post(`${BACKEND_URL}/users/login`, {
         email,
         password,
       },
