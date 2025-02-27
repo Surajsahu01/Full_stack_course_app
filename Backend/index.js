@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser()); 
 app.use(express.urlencoded({ extended: true }));
 // app.use(cors({
-//     origin: "*", 
+//     origin: process.env.FRONTEND_URL, 
 //     credentials: true,
 //     methods: ["GET", "POST", "PUT", "DELETE"],
 //     allowedHeaders: ["Content-Type", "Authorization"]
@@ -26,15 +26,17 @@ app.use(express.urlencoded({ extended: true }));
 
  // ✅ Add your frontend domain
 
-app.use(cors({
+ app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || process.env.FRONTEND_URL.includes(origin)) {
+        const allowedOrigins = process.env.FRONTEND_URL;
+
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
             callback(new Error("Not allowed by CORS"));
         }
     },
-    credentials: true, // ✅ Required for cookies, authentication, sessions
+    credentials: true, // ✅ Required for authentication (cookies, sessions)
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));

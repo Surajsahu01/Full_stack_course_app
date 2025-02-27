@@ -18,7 +18,7 @@ const Login = () => {
     // console.log("Login Data:", { email, password });
     
     navigate(role === "user" ? "/login" : "/admin/login");
-    console.log(`Logging in as ${role}:`, { email, password });
+    // console.log(`Logging in as ${role}:`, { email, password });
 
     try {
       const response = await axios.post(`${BACKEND_URL}/users/login`, {

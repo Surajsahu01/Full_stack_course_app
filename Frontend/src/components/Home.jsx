@@ -37,22 +37,40 @@ const Home = () => {
      },[]);
 
 
-  const handelLogout = async()=>{
+  const handelLogout = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/users/logout`,{
-        withCredentials: true,
-      })
-      console.log("Logout response:", response.data); // Debugging
-      toast.success("Logout Successfull",response.data.messsage);
-      localStorage.removeItem("user");
-      localStorage.removeItem("id");
-      // setTimeout(() => setIsLogedIn(false), 100);
-      setIsLogedIn(false);
+        const response = await axios.get(`${BACKEND_URL}/users/logout`, {
+            withCredentials: true,
+        });
+
+        console.log("Logout response:", response.data); // ✅ Debugging in deployed app
+
+        if (response.status === 200) {
+            toast.success("Logout Successful", response.data.message);
+
+            // ✅ Force cookie deletion (in case it's not removed automatically)
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+            // ✅ Clear Local Storage
+            localStorage.removeItem("user");
+            localStorage.removeItem("id");
+
+            // ✅ Directly update login state
+            setIsLogedIn(false);
+        } else {
+            throw new Error("Logout failed");
+        }
     } catch (error) {
-      console.log("Error in loging out", error);
-      toast.error(error.response.data.error || "Error in loging out");
+        console.log("Error in logging out:", error);
+
+        // ✅ Handle backend CORS issues or missing cookies
+        if (error.response) {
+            toast.error(error.response.data.error || "Error in logging out");
+        } else {
+            toast.error("Server not responding. Check network.");
+        }
     }
-  };
+};
 
   useEffect(()=>{
     const fetchCourses = async()=>{
