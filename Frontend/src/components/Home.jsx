@@ -42,9 +42,11 @@ const Home = () => {
       const response = await axios.get(`${BACKEND_URL}/users/logout`,{
         withCredentials: true,
       })
+      console.log("Logout response:", response.data); // Debugging
       toast.success("Logout Successfull",response.data.messsage);
       localStorage.removeItem("user");
       localStorage.removeItem("id");
+      // setTimeout(() => setIsLogedIn(false), 100);
       setIsLogedIn(false);
     } catch (error) {
       console.log("Error in loging out", error);

@@ -82,7 +82,12 @@ export const userLogout = (req, res)=>{
             return res.status(401).json({error: "Kindly login First"})
         }
         
-        res.clearCookie("jwt");
+        // res.clearCookie("jwt");
+        res.clearCookie("token", { 
+            httpOnly: true, 
+            secure: true,  // ✅ Required for HTTPS
+            sameSite: "None"  // ✅ Needed for cross-origin requests
+        });
         res.status(200).json({message:"Logout successfuly"});
 
     } catch (error) {
