@@ -78,9 +78,9 @@ export const userLogin = async(req, res) => {
 export const userLogout = (req, res)=>{
 
     try {
-        if(!req.cookies.jwt){
-            return res.status(401).json({error: "Kindly login First"})
-        }
+        // if(!req.cookies.jwt){
+        //     return res.status(401).json({error: "Kindly login First"})
+        // }
         
         // res.clearCookie("jwt");
         res.clearCookie("token", { 
