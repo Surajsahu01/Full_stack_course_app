@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
  app.use(cors({
     origin: function (origin, callback) {
-        const allowedOrigins = process.env.FRONTEND_URL;
+        const allowedOrigins = "https://full-stack-course-app-lovat.vercel.app/";
 
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
