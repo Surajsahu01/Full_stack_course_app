@@ -16,13 +16,29 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser()); 
 app.use(express.urlencoded({ extended: true }));
+// app.use(cors({
+//     origin: "*", 
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type", "Authorization"]
+
+// }));
+
+ // ✅ Add your frontend domain
+
 app.use(cors({
-    origin: "*", 
-    credentials: true,
+    origin: function (origin, callback) {
+        if (!origin || process.env.FRONTEND_URL.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true, // ✅ Required for cookies, authentication, sessions
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
-
 }));
+
 
 // Database Connection
 connectDB();
