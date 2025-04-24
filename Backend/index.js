@@ -28,12 +28,8 @@ app.use(express.urlencoded({ extended: true }));
 
  app.use(cors({
     origin: function (origin, callback) {
-<<<<<<< HEAD
-        const allowedOrigins = "http://localhost:5173";
+       const allowedOrigins = process.env.FRONTEND_URL;
 
-=======
-        const allowedOrigins = process.env.FRONTEND_URL;
->>>>>>> 0f8e5448f37bad3ff64322e378ae0164f2986ac9
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
