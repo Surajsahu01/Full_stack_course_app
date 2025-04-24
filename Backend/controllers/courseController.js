@@ -20,7 +20,7 @@ export const addCourses = async (req, res) => {
         if (!admin) {
             return res.status(404).json({ error: 'Admin not found' });  
         }
-        console.log("admin", admin.firstname);
+        // console.log("admin", admin.firstname);
         
         // Validate input fields
         if (!title || !description || !price) {
@@ -193,7 +193,7 @@ export const courseDetails = async(req, res) =>{
 import Stripe from "stripe"
 import { create } from 'domain';
 const stripe = new Stripe(process.env.STRIP_KEY);
-console.log(process.env.STRIP_KEY);
+// console.log(process.env.STRIP_KEY);
 
 export const buyCourse = async(req,res) => {
         const {courseId} = req.body;

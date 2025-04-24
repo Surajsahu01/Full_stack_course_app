@@ -48,7 +48,7 @@ const Buy = () => {
                 setCourse(response.data.course);
                 setClientSecret(response.data.clientSecret);
                 setUserData(user.user);
-                console.log(response.data);
+                // console.log(response.data);
                 setLoading(false);
 
             } catch (error) {
@@ -68,7 +68,7 @@ const Buy = () => {
         event.preventDefault();
 
         if (!stripe || !elements) {
-            console.log("Stripe or Element not found");
+            // console.log("Stripe or Element not found");
             return;
         }
 
@@ -77,7 +77,7 @@ const Buy = () => {
         const card = elements.getElement(CardElement);
 
         if (card == null) {
-            console.log("Card Element null");
+            // console.log("Card Element null");
             setLoading(false);
             return;
         }
@@ -93,11 +93,11 @@ const Buy = () => {
             setCardError(error.message);
             return; // Stop further execution if there's an error
         } else {
-            console.log('Payment method created', paymentMethod);
+            // console.log('Payment method created', paymentMethod);
         }
 
         if (!clientSecret) {
-            console.log("No client secret found");
+            // console.log("No client secret found");
             setLoading(false);
             return;
         }
@@ -111,7 +111,7 @@ const Buy = () => {
                 },
             },
         });
-        console.log("payment info" , paymentIntent);
+        // console.log("payment info" , paymentIntent);
         
 
         if (confirmError) {
@@ -142,7 +142,7 @@ const Buy = () => {
 
                 // 
                 toast.success("Payment successful! Order placed.");
-                console.log("Purchase confirmed", response);
+                // console.log("Purchase confirmed", response);
                 navigate("/purchases");  // Redirect to purchase page after successful payment
             } catch (error) {
                 console.error("Error confirming purchase", error);

@@ -31,8 +31,8 @@ const Login = () => {
         "Content-Type":"application/json",
       },
     })
-      console.log("Signup Data:", response.data.user.firstname);
-      console.log("loging Successfully:", response.data);
+      // console.log("Signup Data:", response.data.user.firstname);
+      // console.log("loging Successfully:", response.data);
 
       localStorage.setItem("user", JSON.stringify(response.data));
       localStorage.setItem("id", JSON.stringify(response.data.user.firstname));

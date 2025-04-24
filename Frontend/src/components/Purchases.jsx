@@ -31,7 +31,7 @@ const Purchases = () => {
                     withCredentials: true,
                 });
                 setPurchases(response.data.courseData);
-                console.log(response.data);
+                // console.log(response.data);
                 
             } catch (error) {
                 console.error("Error in fetching purchases", error);

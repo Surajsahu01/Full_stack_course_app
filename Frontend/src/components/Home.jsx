@@ -43,7 +43,7 @@ const Home = () => {
             withCredentials: true,
         });
 
-        console.log("Logout response:", response.data); // ✅ Debugging in deployed app
+        // console.log("Logout response:", response.data); // ✅ Debugging in deployed app
 
         if (response.status === 200) {
             toast.success("Logout Successful", response.data.message);

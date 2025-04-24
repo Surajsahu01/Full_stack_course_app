@@ -16,7 +16,7 @@ const AdminSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     navigate(role === "user" ? "/singup" : "/admin/signup");
-    console.log(`Logging in as ${role}:`, { email, password });
+    // console.log(`Logging in as ${role}:`, { email, password });
     
     try {
       const response = await axios.post(`${BACKEND_URL}/admin/signup`, {
@@ -32,7 +32,7 @@ const AdminSignup = () => {
       },
     })
     
-      console.log("signup response:", response.data);
+      // console.log("signup response:", response.data);
       alert(response.data.message);
 
       // window.location.href = "/login";

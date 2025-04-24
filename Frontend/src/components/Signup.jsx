@@ -20,7 +20,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     navigate(role === "user" ? "/singup" : "/admin/signup");
-    console.log(`Logging in as ${role}:`, { email, password });
+    // console.log(`Logging in as ${role}:`, { email, password });
     try {
       const response = await axios.post(`${BACKEND_URL}/users/signup`, {
         firstname,
@@ -35,7 +35,7 @@ const Signup = () => {
       },
     })
       // console.log("Signup Data:", {firstname,lastname, email, password });
-      console.log("signup response:", response.data);
+      // console.log("signup response:", response.data);
       alert(response.data.message);
       // setSuccessMessege(message.response.data.message); 
 

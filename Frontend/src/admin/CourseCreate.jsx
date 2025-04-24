@@ -16,7 +16,7 @@ const CourseCreate = () => {
   // Get Admin Token & ID from localStorage
   const admin = JSON.parse(localStorage.getItem("AdminUser"));
   const token = admin?.token;
-  console.log(token);
+  // console.log(token);
   
   useEffect(() =>{
     if(!token){
@@ -50,7 +50,7 @@ const CourseCreate = () => {
         },
         withCredentials: true
       });
-      console.log(response.data);
+      // console.log(response.data);
       toast.success(response.data.message || "Course added successfully!");
       navigate("/admin/ourcourses");
       setTitle("");

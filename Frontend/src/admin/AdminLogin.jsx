@@ -15,7 +15,7 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Logging in as ${role}:`, { email, password });
+    // console.log(`Logging in as ${role}:`, { email, password });
     navigate(role === "user" ? "/login" : "/admin/login");
   
 
@@ -30,8 +30,8 @@ const AdminLogin = () => {
         "Content-Type":"application/json",
       },
     })
-      console.log("Signup Data:", response.data.user.firstname);
-      console.log("loging Successfully:", response.data);
+      // console.log("Signup Data:", response.data.user.firstname);
+      // console.log("loging Successfully:", response.data);
 
       localStorage.setItem("AdminUser", JSON.stringify(response.data));
       localStorage.setItem("AdminId", JSON.stringify(response.data.user.firstname));

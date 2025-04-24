@@ -37,7 +37,7 @@ const OurCourse = () => {
       );
         const adminCourse = response.data.filter(user => user.creatorId === adminId);
         setCourse(adminCourse);
-        console.log("course:",adminCourse);
+        // console.log("course:",adminCourse);
         
         // console.log(response.data);
         
@@ -60,7 +60,7 @@ const deleteCourse = async (id) => {
         withCredentials: true,
     }
   );
-    console.log(response.data);
+    // console.log(response.data);
     setCourse(course.filter((course) => course._id !== id));
     toast.success(response.data.message);
   } catch (error) {

@@ -34,7 +34,7 @@ const UpdateCourse = () => {
           },
           withCredentials: true,
         });
-        console.log(response.data);
+        // console.log(response.data);
         const { title, description, price } = response.data.course;
         setTitle(title || '');
         setDescription(description || '');
@@ -95,7 +95,7 @@ const UpdateCourse = () => {
         },
         withCredentials: true
       });
-      console.log(response.data);
+      // console.log(response.data);
       toast.success(response.data.message || "Course apdated successfully!");
       navigate("/admin/ourcourses");
     } catch (error) {
