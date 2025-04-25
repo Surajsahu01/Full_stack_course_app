@@ -139,7 +139,7 @@ const Home = () => {
         <header className="flex items-center justify-between py-4 ">
           <div className="flex items-center space-x-2 ">
             <img src={logo} alt="" className="h-10 w-10 rounded-full "/>
-            <h1 className="text-xl text-orange-500 font-bold ">CourseHaven</h1>
+            <h1 className="text-xl text-orange-500 font-bold ">MyCourse</h1>
             {/* <Link to="/home" className="text-xl text-orange-500 font-bold " >CourseHaven</Link> */}
           </div>
 
@@ -183,7 +183,7 @@ const Home = () => {
       
         {/* Main section */}
         <section className="text-center py-20">
-            <h1 className="text-4xl text-orange-600 font-bold">CoursHaven</h1>
+            <h1 className="text-4xl text-orange-600 font-bold">MyCours</h1>
             <br />
             <p className="text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque rem quod placeat necessitatibus corporis corrupti nisi quam eos! Eum ab laborum nostrum cumque neque, qui enim illo animi ea consequuntur reprehenderit molestias voluptatem fuga exercitationem necessitatibus fugit non saepe omnis error laudantium unde. Ex autem dolor numquam hic molestiae adipisci? </p>
             <div className="py-6 space-x-8">
@@ -246,7 +246,7 @@ const Home = () => {
     <div className="flex flex-col items-center md:items-start space-y-4">
       <div className="flex items-center space-x-2">
         <img src={logo} alt="Logo" className="h-7 w-7 rounded-full" />
-        <h1 className="text-[18px] text-orange-500 font-bold">CourseHaven</h1>
+        <h1 className="text-[18px] text-orange-500 font-bold">MyCourse</h1>
       </div>
       <div className="mt-2">
         <p className="mb-2">Follow us</p>
